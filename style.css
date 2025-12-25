@@ -462,6 +462,7 @@ nav {
 @media (max-width: 768px) {
     .content-wrapper {
         grid-template-columns: 1fr;
+        padding: 1rem;
     }
 
     .filters {
@@ -469,9 +470,56 @@ nav {
         /* Simplification for mobile init */
     }
 
+    .hero {
+        padding: 2rem 1rem;
+    }
+
     .hero h1 {
         font-size: 2rem;
     }
+
+    .app-header {
+        padding: 0.5rem 1rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    nav {
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 0.5rem;
+        -webkit-overflow-scrolling: touch;
+        /* Scroll snap */
+        scroll-snap-type: x mandatory;
+    }
+
+    .nav-link {
+        padding: 0.8rem 1.2rem;
+        /* Bigger touch target */
+        scroll-snap-align: start;
+        font-size: 1.1rem;
+    }
+
+    .experiments-grid {
+        grid-template-columns: 1fr;
+        /* Single column on phone */
+    }
+
+    .card {
+        margin-bottom: 1rem;
+    }
+
+    /* Hide hover effects on touch to prevent sticky states */
+    .card:hover {
+        transform: none;
+    }
+}
+
+/* Touch Target Helper */
+.touch-target {
+    min-height: 44px;
+    min-width: 44px;
 }
 
 /* Voice Animation */

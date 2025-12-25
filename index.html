@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MINT Lab - Experimente für Lehrer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- PWA Setup -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0f172a">
+</head>
+
+<body>
+
+    <header class="app-header">
+        <div class="logo" id="btn-logo" style="cursor: pointer;">
+            <span class="logo-icon">⚗️</span> MINT Lab
+        </div>
+        <nav>
+            <button id="btn-home" class="nav-link active">Entdecken</button>
+            <button id="btn-inspire" class="nav-link" style="color: var(--accent);">🎲 Zufall</button>
+            <button id="btn-tools" class="nav-link">Tools</button>
+            <button id="btn-upload" class="nav-link">Hochladen</button>
+        </nav>
+        <div class="user-actions" style="display: flex; gap: 1rem; align-items: center;">
+            <button id="btn-theme-toggle"
+                style="background:none; border:none; font-size: 1.2rem; cursor: pointer;">☀️</button>
+            <div class="user-profile" id="btn-profile" style="cursor: pointer;">
+                <div class="avatar">👨‍🏫</div>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <!-- Discovery View -->
+        <div id="view-discovery" class="view-section active">
+            <section class="hero">
+                <h1>Entdecke Experimente für deinen Unterricht</h1>
+                <p>Von Lehrern für Lehrer – MINT einfach gemacht.</p>
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Nach Thema, Fach oder Klasse suchen...">
+                </div>
+            </section>
+
+            <div class="content-wrapper">
+                <aside class="filters">
+                    <h3>Filter</h3>
+                    <div class="filter-group">
+                        <label>Fach</label>
+                        <select id="filter-subject">
+                            <option value="all">Alle Fächer</option>
+                            <option value="Biologie">Biologie</option>
+                            <option value="Chemie">Chemie</option>
+                            <option value="Physik">Physik</option>
+                            <option value="Technik">Technik</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Klassenstufe</label>
+                        <select id="filter-grade">
+                            <option value="all">Alle Klassen</option>
+                            <option value="5-7">5. - 7. Klasse</option>
+                            <option value="8-10">8. - 10. Klasse</option>
+                            <option value="11-13">Oberstufe</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Dauer</label>
+                        <select id="filter-duration">
+                            <option value="all">Beliebig</option>
+                            <option value="short">
+                                < 30 Min</option>
+                            <option value="medium">30 - 60 Min</option>
+                            <option value="long">> 60 Min</option>
+                        </select>
+                    </div>
+                </aside>
+
+                <div class="experiments-grid" id="experiments-container">
+                    <!-- Cards will be injected here via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Tools View -->
+        <div id="view-tools" class="view-section" style="display: none;">
+            <div class="content-wrapper">
+                <div style="grid-column: 1 / -1; max-width: 600px; margin: 0 auto; text-align: center;">
+                    <h2>Labor Tools</h2>
+                    <br>
+
+                    <!-- Stopwatch Card -->
+                    <div class="card" style="padding: 2rem; background: var(--bg-card); cursor: default;">
+                        <h3 style="color: var(--accent); margin-bottom: 1rem;">⏱ Stoppuhr</h3>
+                        <div id="stopwatch-display"
+                            style="font-size: 4rem; font-family: monospace; font-weight: 700; margin: 1rem 0;">
+                            00:00:00
+                        </div>
+
+                        <div style="display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1.5rem;">
+                            <button class="btn-preset" data-time="300">5 Min</button>
+                            <button class="btn-preset" data-time="600">10 Min</button>
+                            <button class="btn-preset" data-time="900">15 Min</button>
+                        </div>
+                        <div style="display: flex; gap: 1rem; justify-content: center;">
+                            <button id="btn-start" class="btn-primary"
+                                style="background: var(--success); color: #000;">Start</button>
+                            <button id="btn-stop" class="btn-primary"
+                                style="background: var(--warning); color: #000;">Stop</button>
+                            <button id="btn-reset" class="btn-secondary">Reset</button>
+                            <button id="btn-voice" class="btn-secondary"
+                                title="Sprachsteuerung: Sag 'Start' oder 'Stopp'">🎤</button>
+                        </div>
+                    </div>
+
+                    <!-- Calculator Placeholder -->
+                    <!-- Unit Converter Card -->
+                    <div class="card"
+                        style="padding: 2rem; background: var(--bg-card); margin-top: 2rem; cursor: default;">
+                        <h3 style="color: var(--accent); margin-bottom: 1rem;">⚖️ Einheiten-Rechner</h3>
+
+                        <div
+                            style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+                            <input type="number" id="conv-input" placeholder="Wert" value="0">
+                            <span style="font-weight: bold;">=</span>
+                            <input type="number" id="conv-output" placeholder="Ergebnis" readonly>
+                        </div>
+
+                        <div style="display: flex; gap: 1rem; justify-content: center;">
+                            <select id="conv-type" style="padding: 0.5rem; border-radius: 8px;">
+                                <option value="c-f">Celsius → Fahrenheit</option>
+                                <option value="f-c">Fahrenheit → Celsius</option>
+                                <option value="kg-lbs">Kilogramm → Pfund</option>
+                                <option value="m-ft">Meter → Fuß</option>
+                            </select>
+                            <button id="btn-convert" class="btn-primary">Berechnen</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload View (Placeholder) -->
+        <div id="view-upload" class="view-section" style="display: none;">
+            <div class="upload-container">
+                <h2>Neues Experiment teilen</h2>
+                <form id="upload-form">
+                    <div class="form-group">
+                        <label>Titel des Experiments</label>
+                        <input type="text" required placeholder="z.B. Elefantenzahnpasta">
+                    </div>
+                    <div class="form-group">
+                        <label>Fach</label>
+                        <select>
+                            <option>Chemie</option>
+                            <option>Physik</option>
+                            <option>Biologie</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Medien hochladen (Bilder / Videos)</label>
+                        <input type="file" id="upload-media" accept="image/*,video/*" multiple style="padding: 0.5rem;">
+                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">Unterstützt JPG,
+                            PNG, MP4</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Beschreibung & Anleitung</label>
+                        <textarea rows="5" placeholder="Schritt für Schritt Anleitung..."></textarea>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <button type="submit" class="btn-primary">Veröffentlichen</button>
+                        <button type="button" id="btn-cancel-upload" class="btn-secondary">Abbrechen</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Custom Alert/Modal for Profile -->
+    <div id="profile-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <span class="close-modal" id="close-profile">&times;</span>
+            <h2>Mein Profil</h2>
+            <div style="font-size: 4rem; margin: 1rem 0;">👨‍🏫</div>
+            <input type="text" id="profile-name" placeholder="Ihr Name (z.B. Hr. Müller)"
+                style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-dark); color: var(--text-main); margin-bottom: 1rem;">
+            <button class="btn-primary" id="save-profile" style="width: 100%;">Speichern</button>
+        </div>
+    </div>
+
+    <!-- Modal for Details -->
+    <div id="detail-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="modal-body">
+                <!-- Details injected via JS -->
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="btn-download-pdf">📄 Als PDF drucken</button>
+                <button class="btn-primary" id="btn-add-favorites">❤️ Merken</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js?v=3"></script>
+</body>
+
+</html>

@@ -81,6 +81,13 @@ function init() {
     btnLogo = document.getElementById('btn-logo');
     btnInspire = document.getElementById('btn-inspire');
 
+    // Restore missing assignments
+    btnThemeToggle = document.getElementById('btn-theme-toggle');
+    profileModal = document.getElementById('profile-modal');
+    btnProfile = document.getElementById('btn-profile');
+    btnSaveProfile = document.getElementById('save-profile');
+    profileNameInput = document.getElementById('profile-name');
+
     // Cancel Upload
     document.getElementById('btn-cancel-upload').addEventListener('click', () => {
         switchView('discovery');

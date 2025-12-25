@@ -577,15 +577,16 @@ function parseCSV(text) {
 
         const clean = row.map(val => val.replace(/^"|"$/g, '').trim());
 
-        // Logik: Google Forms packt meistens einen Zeitstempel in Spalte A.
-        // Wenn in Spalte A ein Datum steht (oder Spalte B das 'x' enthält), verschieben wir alles.
-        let offset = 0;
-        if (clean[1] && (clean[1].toLowerCase() === 'x')) {
-            offset = 1; // Spalte A ist Zeitstempel, B ist Freigabe
+        // Automatische Erkennung: Wo steht das 'x'?
+        let offset = -1;
+        if (clean[0] && clean[0].toLowerCase() === 'x') {
+            offset = 0; // Kein Zeitstempel, 'x' steht ganz vorne (Spalte A)
+        } else if (clean[1] && clean[1].toLowerCase() === 'x') {
+            offset = 1; // Zeitstempel in A, 'x' steht in Spalte B
         }
 
-        // Only import if "Freigabe" is 'x' or 'X'
-        if (clean[offset].toLowerCase() !== 'x') continue;
+        // Wenn kein 'x' gefunden wurde, ignorieren wir die Zeile
+        if (offset === -1) continue;
 
         result.push({
             id: 'cloud-' + i,
@@ -596,7 +597,7 @@ function parseCSV(text) {
             image: clean[offset + 5] || 'https://via.placeholder.com/600',
             description: clean[offset + 6],
             materials: clean[offset + 7] ? clean[offset + 7].split(',').map(s => s.trim()) : [],
-            steps: clean[offset + 8] ? clean[8 + offset].split(',').map(s => s.trim()) : [],
+            steps: clean[offset + 8] ? clean[offset + 8].split(',').map(s => s.trim()) : [],
             safety: clean[offset + 9] || ''
         });
     }

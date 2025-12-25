@@ -153,7 +153,7 @@ function init() {
     if (formBtn) {
         formBtn.addEventListener('click', () => {
             // TODO: REPLACE WITH YOUR GOOGLE FORM LINK
-            const formUrl = "https://docs.google.com/forms/d/e/ FAIPQLSdhTwZrjMyORTLlA0UGaeZLdJDnCTz0E5wsLT1NJCY1iVOSTA/viewform";
+            const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdhTwZrjMyORTLlA0UGaeZLdJDnCTz0E5wsLT1NJCY1iVOSTA/viewform";
             if (formUrl === "https://docs.google.com/forms/") {
                 alert("Bitte fügen Sie erst Ihren Google Forms Link in script.js ein!");
             } else {

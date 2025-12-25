@@ -262,7 +262,7 @@ function openModal(exp) {
         </div>
     `).join('');
 
-    const imageHtml = exp.image ? `<img src="${getDirectMediaUrl(exp.image)}" alt="Media" style="width:100%; border-radius:12px; margin-bottom:1rem; object-fit: cover; max-height: 400px;">` : '';
+    const imageHtml = exp.image ? `<img src="${getDirectMediaUrl(exp.image)}" alt="Media" style="width:100%; border-radius:12px; margin-bottom:1rem; object-fit: cover; max-height: 400px;" onerror="this.style.display='none'">` : '';
     const videoHtml = getMediaHtml(exp.video);
 
     modalBody.innerHTML = `
@@ -298,49 +298,62 @@ function openModal(exp) {
 
 /* Media Helpers */
 function getDirectMediaUrl(url) {
-    if (!url) return 'https://via.placeholder.com/600x400?text=Kein+Bild';
+    if (!url || typeof url !== 'string') return 'https://via.placeholder.com/600x400?text=Kein+Bild';
+
+    // Handle multiple URLs (take the first one)
+    const firstUrl = url.split(',')[0].trim();
 
     // Google Drive: Convert share link to direct link
-    if (url.includes('drive.google.com')) {
-        const idMatch = url.match(/\/d\/([^/]+)/) || url.match(/id=([^&]+)/);
+    if (firstUrl.includes('drive.google.com')) {
+        // Find the ID (33+ chars usually) - look for /d/ or id=
+        const idMatch = firstUrl.match(/\/d\/([a-zA-Z0-9_-]{25,})/) || firstUrl.match(/id=([a-zA-Z0-9_-]{25,})/);
         if (idMatch) return `https://drive.google.com/uc?id=${idMatch[1]}`;
     }
 
     // YouTube Thumbnail
-    if (url.includes('youtube.com') || url.includes('youtu.be')) {
-        const idMatch = url.match(/(?:v=|\/|be\/)([^&?/]+)/);
+    if (firstUrl.includes('youtube.com') || firstUrl.includes('youtu.be')) {
+        const idMatch = firstUrl.match(/(?:v=|\/|be\/)([^&?/ ]+)/);
         if (idMatch) return `https://img.youtube.com/vi/${idMatch[1]}/maxresdefault.jpg`;
     }
 
-    return url;
+    return firstUrl;
 }
 
 function getMediaHtml(url) {
-    if (!url) return '';
+    if (!url || typeof url !== 'string') return '';
+
+    // Split for multiple URLs
+    const firstUrl = url.split(',')[0].trim();
 
     // YouTube Embed
-    if (url.includes('youtube.com') || url.includes('youtu.be')) {
-        const idMatch = url.match(/(?:v=|\/|be\/)([^&?/]+)/);
+    if (firstUrl.includes('youtube.com') || firstUrl.includes('youtu.be')) {
+        const idMatch = firstUrl.match(/(?:v=|\/|be\/)([^&?/ ]+)/);
         if (idMatch) {
             return `<div class="video-container"><iframe src="https://www.youtube.com/embed/${idMatch[1]}" frameborder="0" allowfullscreen></iframe></div>`;
         }
     }
 
     // Direct Video (mp4, etc)
-    if (url.endsWith('.mp4') || url.endsWith('.mov') || url.endsWith('.webm')) {
-        return `<video controls style="width:100%; border-radius:12px; margin-bottom:1rem;"><source src="${url}" type="video/mp4"></video>`;
+    const lowerUrl = firstUrl.toLowerCase();
+    if (lowerUrl.endsWith('.mp4') || lowerUrl.endsWith('.mov') || lowerUrl.endsWith('.webm')) {
+        return `<video controls style="width:100%; border-radius:12px; margin-bottom:1rem;"><source src="${firstUrl}" type="video/mp4"></video>`;
     }
 
-    // Google Drive Video detection (very basic)
-    if (url.includes('drive.google.com') && (url.includes('video') || url.includes('mp4'))) {
-        const idMatch = url.match(/\/d\/([^/]+)/);
-        if (idMatch) {
+    // Google Drive Video detection
+    if (firstUrl.includes('drive.google.com')) {
+        const idMatch = firstUrl.match(/\/d\/([a-zA-Z0-9_-]{25,})/) || firstUrl.match(/id=([a-zA-Z0-9_-]{25,})/);
+        // If it looks like a video link or explicitly contains viewing keywords
+        if (idMatch && (lowerUrl.includes('video') || lowerUrl.includes('mov') || lowerUrl.includes('mp4') || lowerUrl.includes('preview'))) {
             return `<div class="video-container"><iframe src="https://drive.google.com/file/d/${idMatch[1]}/preview" frameborder="0" allowfullscreen></iframe></div>`;
         }
     }
 
-    // Fallback to Image
-    return `<img src="${getDirectMediaUrl(url)}" alt="Media" style="width:100%; border-radius:12px; margin-bottom:1rem; object-fit: cover; max-height: 400px;">`;
+    // Fallback to Image (only if it looks like a link)
+    if (firstUrl.startsWith('http')) {
+        return `<img src="${getDirectMediaUrl(firstUrl)}" alt="Media" style="width:100%; border-radius:12px; margin-bottom:1rem; object-fit: cover; max-height: 400px;" onerror="this.style.display='none'">`;
+    }
+
+    return '';
 }
 
 /* Filtering */

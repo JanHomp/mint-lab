@@ -218,9 +218,12 @@ function renderExperiments(data) {
             safetyHtml = `<span class="tag danger">⚠️ ${exp.safety}</span>`;
         }
 
+        const isVideo = exp.image && (exp.image.includes('youtube.com') || exp.image.includes('youtu.be') || exp.image.endsWith('.mp4'));
+
         card.innerHTML = `
-            <div class="card-image" style="background-image: url('${exp.image}')">
-                ${isFav ? '<div style="position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.6); padding:5px; border-radius:50%">❤️</div>' : ''}
+            <div class="card-image" style="background-image: url('${getDirectMediaUrl(exp.image)}')">
+                ${isFav ? '<div class="fav-icon">❤️</div>' : ''}
+                ${isVideo ? '<div class="video-indicator">▶️</div>' : ''}
             </div>
             <div class="card-content">
                 <div class="tags">
@@ -259,7 +262,14 @@ function openModal(exp) {
         </div>
     `).join('');
 
+    const imageHtml = exp.image ? `<img src="${getDirectMediaUrl(exp.image)}" alt="Media" style="width:100%; border-radius:12px; margin-bottom:1rem; object-fit: cover; max-height: 400px;">` : '';
+    const videoHtml = getMediaHtml(exp.video);
+
     modalBody.innerHTML = `
+        <div class="detail-media">
+            ${videoHtml}
+            ${imageHtml}
+        </div>
         <div class="detail-header">
             <div class="tags" style="margin-bottom:1rem">
                 <span class="tag">${exp.subject}</span>
@@ -284,6 +294,53 @@ function openModal(exp) {
         </div>
     `;
     modal.classList.add('active');
+}
+
+/* Media Helpers */
+function getDirectMediaUrl(url) {
+    if (!url) return 'https://via.placeholder.com/600x400?text=Kein+Bild';
+
+    // Google Drive: Convert share link to direct link
+    if (url.includes('drive.google.com')) {
+        const idMatch = url.match(/\/d\/([^/]+)/) || url.match(/id=([^&]+)/);
+        if (idMatch) return `https://drive.google.com/uc?id=${idMatch[1]}`;
+    }
+
+    // YouTube Thumbnail
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+        const idMatch = url.match(/(?:v=|\/|be\/)([^&?/]+)/);
+        if (idMatch) return `https://img.youtube.com/vi/${idMatch[1]}/maxresdefault.jpg`;
+    }
+
+    return url;
+}
+
+function getMediaHtml(url) {
+    if (!url) return '';
+
+    // YouTube Embed
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+        const idMatch = url.match(/(?:v=|\/|be\/)([^&?/]+)/);
+        if (idMatch) {
+            return `<div class="video-container"><iframe src="https://www.youtube.com/embed/${idMatch[1]}" frameborder="0" allowfullscreen></iframe></div>`;
+        }
+    }
+
+    // Direct Video (mp4, etc)
+    if (url.endsWith('.mp4') || url.endsWith('.mov') || url.endsWith('.webm')) {
+        return `<video controls style="width:100%; border-radius:12px; margin-bottom:1rem;"><source src="${url}" type="video/mp4"></video>`;
+    }
+
+    // Google Drive Video detection (very basic)
+    if (url.includes('drive.google.com') && (url.includes('video') || url.includes('mp4'))) {
+        const idMatch = url.match(/\/d\/([^/]+)/);
+        if (idMatch) {
+            return `<div class="video-container"><iframe src="https://drive.google.com/file/d/${idMatch[1]}/preview" frameborder="0" allowfullscreen></iframe></div>`;
+        }
+    }
+
+    // Fallback to Image
+    return `<img src="${getDirectMediaUrl(url)}" alt="Media" style="width:100%; border-radius:12px; margin-bottom:1rem; object-fit: cover; max-height: 400px;">`;
 }
 
 /* Filtering */
@@ -594,11 +651,12 @@ function parseCSV(text) {
             subject: clean[offset + 2],
             grade: clean[offset + 3],
             duration: clean[offset + 4],
-            image: clean[offset + 5] || 'https://via.placeholder.com/600',
-            description: clean[offset + 6],
-            materials: clean[offset + 7] ? clean[offset + 7].split(',').map(s => s.trim()) : [],
-            steps: clean[offset + 8] ? clean[offset + 8].split(',').map(s => s.trim()) : [],
-            safety: clean[offset + 9] || ''
+            image: clean[offset + 5] || '',
+            video: clean[offset + 6] || '',
+            description: clean[offset + 7],
+            materials: clean[offset + 8] ? clean[offset + 8].split(',').map(s => s.trim()) : [],
+            steps: clean[offset + 9] ? clean[offset + 9].split(',').map(s => s.trim()) : [],
+            safety: clean[offset + 10] || ''
         });
     }
     return result;

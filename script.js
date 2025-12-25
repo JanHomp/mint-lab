@@ -148,13 +148,19 @@ function init() {
         window.print(); // Simple fallback
     });
 
-    // Upload Form Handler
-    document.getElementById('upload-form').addEventListener('submit', (e) => {
-        e.preventDefault(); // Stop page reload
-        // ... previous logic ...
-        alert("Experiment hochgeladen! (Mock)");
-        switchView('discovery');
-    });
+    // Upload Handler (Redirect to Google Form)
+    const formBtn = document.getElementById('btn-open-form');
+    if (formBtn) {
+        formBtn.addEventListener('click', () => {
+            // TODO: REPLACE WITH YOUR GOOGLE FORM LINK
+            const formUrl = "https://docs.google.com/forms/";
+            if (formUrl === "https://docs.google.com/forms/") {
+                alert("Bitte fügen Sie erst Ihren Google Forms Link in script.js ein!");
+            } else {
+                window.open(formUrl, '_blank');
+            }
+        });
+    }
 
     // Stopwatch Handlers
     document.getElementById('btn-start').addEventListener('click', startTimer);

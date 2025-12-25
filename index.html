@@ -147,38 +147,21 @@
             </div>
         </div>
 
-        <!-- Upload View (Placeholder) -->
+        <!-- Upload View (Google Forms Link) -->
         <div id="view-upload" class="view-section" style="display: none;">
-            <div class="upload-container">
+            <div class="upload-container" style="text-align: center; padding: 2rem;">
                 <h2>Neues Experiment teilen</h2>
-                <form id="upload-form">
-                    <div class="form-group">
-                        <label>Titel des Experiments</label>
-                        <input type="text" required placeholder="z.B. Elefantenzahnpasta">
-                    </div>
-                    <div class="form-group">
-                        <label>Fach</label>
-                        <select>
-                            <option>Chemie</option>
-                            <option>Physik</option>
-                            <option>Biologie</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Medien hochladen (Bilder / Videos)</label>
-                        <input type="file" id="upload-media" accept="image/*,video/*" multiple style="padding: 0.5rem;">
-                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">Unterstützt JPG,
-                            PNG, MP4</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Beschreibung & Anleitung</label>
-                        <textarea rows="5" placeholder="Schritt für Schritt Anleitung..."></textarea>
-                    </div>
-                    <div style="display: flex; gap: 1rem;">
-                        <button type="submit" class="btn-primary">Veröffentlichen</button>
-                        <button type="button" id="btn-cancel-upload" class="btn-secondary">Abbrechen</button>
-                    </div>
-                </form>
+                <p style="margin-bottom: 2rem;">Haben Sie eine tolle Idee für den Unterricht? <br>Senden Sie uns Ihren
+                    Vorschlag über unser Formular!</p>
+
+                <!-- <a href="YOUR_GOOGLE_FORM_LINK_HERE" target="_blank" class="btn-primary" style="text-decoration: none; font-size: 1.2rem;">📝 Zum Formular</a> -->
+
+                <button id="btn-open-form" class="btn-primary" style="font-size: 1.2rem;">📝 Zum Formular</button>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 1rem;">(Öffnet Google Forms in neuem
+                    Tab)</p>
+
+                <br><br>
+                <button id="btn-cancel-upload" class="btn-secondary">Zurück</button>
             </div>
         </div>
     </main>

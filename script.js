@@ -166,64 +166,60 @@ function init() {
     btnShowHelp.addEventListener('click', () => {
         helpModal.classList.add('active');
     });
-}
 
-// Favorites Handler
-document.getElementById('btn-add-favorites').addEventListener('click', toggleFavorite);
+    // Favorites Handler
+    document.getElementById('btn-add-favorites').addEventListener('click', toggleFavorite);
 
-// PDF Handler (Mock)
-document.getElementById('btn-download-pdf').addEventListener('click', () => {
-    alert("Dies ist eine Demo.\nIn der Vollversion würde hier ein PDF erstellt.");
-    window.print(); // Simple fallback
-});
-
-// Upload Handler (Redirect to Google Form)
-const formBtn = document.getElementById('btn-open-form');
-if (formBtn) {
-    formBtn.addEventListener('click', () => {
-        // TODO: REPLACE WITH YOUR GOOGLE FORM LINK
-        const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdhTwZrjMyORTLlA0UGaeZLdJDnCTz0E5wsLT1NJCY1iVOSTA/viewform";
-        if (formUrl === "https://docs.google.com/forms/") {
-            alert("Bitte fügen Sie erst Ihren Google Forms Link in script.js ein!");
-        } else {
-            window.open(formUrl, '_blank');
-        }
+    // PDF Handler (Mock)
+    document.getElementById('btn-download-pdf').addEventListener('click', () => {
+        alert("Dies ist eine Demo.\nIn der Vollversion würde hier ein PDF erstellt.");
+        window.print(); // Simple fallback
     });
-}
 
-// Stopwatch Handlers
-document.getElementById('btn-start').addEventListener('click', startTimer);
-document.getElementById('btn-stop').addEventListener('click', stopTimer);
-document.getElementById('btn-reset').addEventListener('click', resetTimer);
+    // Upload Handler (Redirect to Google Form)
+    const formBtn = document.getElementById('btn-open-form');
+    if (formBtn) {
+        formBtn.addEventListener('click', () => {
+            const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdhTwZrjMyORTLlA0UGaeZLdJDnCTz0E5wsLT1NJCY1iVOSTA/viewform";
+            if (formUrl === "https://docs.google.com/forms/") {
+                alert("Bitte fügen Sie erst Ihren Google Forms Link in script.js ein!");
+            } else {
+                window.open(formUrl, '_blank');
+            }
+        });
+    }
 
-// Timer Presets
-document.querySelectorAll('.btn-preset').forEach(btn => {
-    btn.addEventListener('click', () => {
-        resetTimer();
-        const sec = parseInt(btn.dataset.time);
-        elapsed = sec * 1000;
-        countDownMode = true; // Flag for countdown behavior if we wanted to implement real countdown logic
-        // For now, just setting the time to show it works as a preset or start point
-        updateTimerDisplay();
-        // Optional: Auto-start? Let's just set it for now.
+    // Stopwatch Handlers
+    document.getElementById('btn-start').addEventListener('click', startTimer);
+    document.getElementById('btn-stop').addEventListener('click', stopTimer);
+    document.getElementById('btn-reset').addEventListener('click', resetTimer);
+
+    // Timer Presets
+    document.querySelectorAll('.btn-preset').forEach(btn => {
+        btn.addEventListener('click', () => {
+            resetTimer();
+            const sec = parseInt(btn.dataset.time);
+            elapsed = sec * 1000;
+            countDownMode = true;
+            updateTimerDisplay();
+        });
     });
-});
 
-// Converter Handler
-document.getElementById('btn-convert').addEventListener('click', convertUnits);
+    // Converter Handler
+    document.getElementById('btn-convert').addEventListener('click', convertUnits);
 
-// Voice Handler
-setupVoiceControl();
+    // Voice Handler
+    setupVoiceControl();
 
-// Theme Handler
-btnThemeToggle.addEventListener('click', toggleTheme);
+    // Theme Handler
+    btnThemeToggle.addEventListener('click', toggleTheme);
 
-// Profile Handler
-btnProfile.addEventListener('click', () => {
-    profileModal.classList.add('active');
-});
-btnSaveProfile.addEventListener('click', saveProfile);
-
+    // Profile Handler
+    btnProfile.addEventListener('click', () => {
+        profileModal.classList.add('active');
+    });
+    btnSaveProfile.addEventListener('click', saveProfile);
+}
 
 /* Rendering */
 function renderExperiments(data) {

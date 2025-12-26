@@ -316,7 +316,8 @@ function getDirectMediaUrl(url) {
     if (firstUrl.includes('drive.google.com')) {
         const idMatch = firstUrl.match(/\/d\/([a-zA-Z0-9_-]{25,})/) || firstUrl.match(/id=([a-zA-Z0-9_-]{25,})/);
         if (idMatch) {
-            const finalUrl = `https://drive.google.com/uc?id=${idMatch[1]}`;
+            // Using the /thumbnail endpoint which is much more reliable in Safari/Mobile
+            const finalUrl = `https://drive.google.com/thumbnail?id=${idMatch[1]}&sz=w1000`;
             console.log("MINT-App Drive-Info: Bild-ID erkannt:", idMatch[1]);
             return finalUrl;
         }

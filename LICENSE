@@ -1,19 +1,58 @@
-MINT Lab - License Agreement
+**MINT Lab – License Agreement**
 
-Copyright (c) 2025 Jan Homp. All rights reserved.
+Copyright (c) 2025 Jan Homp.
+All rights reserved.
 
 THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.
 
-TERMS AND CONDITIONS:
+---
 
-1. PERSONAL AND EDUCATIONAL USE:
-Use of this software for personal and non-commercial educational purposes (e.g., in school classrooms) is expressly permitted and free of charge.
+### TERMS AND CONDITIONS
 
-2. COMMERCIAL USE:
-Any commercial use, sale of the software, integration into commercial products, or use for the purpose of generating profit is strictly prohibited without prior written consent from the author (Jan Homp).
+#### 1. PRIVATE AND NON-INSTITUTIONAL USE
 
-3. DISTRIBUTION AND MODIFICATION:
-Distribution of the code is permitted, provided that this license notice and the copyright notice remain unchanged and are included with the code. Modifications for personal use are allowed but may not be commercially exploited without prior consent.
+The use of this software is permitted **free of charge** for:
 
-4. LIMITATION OF LIABILITY:
-In no event shall the author be liable for any damages resulting from the use of this software.
+* private individuals
+* personal learning purposes
+* non-commercial, non-institutional educational use
+
+This includes learning and experimentation outside of an institutional or organizational context.
+
+---
+
+#### 2. INSTITUTIONAL AND SCHOOL USE
+
+The use of this software by **schools, universities, educational institutions, school authorities, or similar organizations** requires a **separate license agreement**, regardless of whether the use is commercial or non-commercial.
+
+Without such a license, institutional use is **not permitted**.
+
+---
+
+#### 3. COMMERCIAL USE
+
+Any commercial use, including but not limited to:
+
+* selling the software
+* integrating it into commercial products or services
+* offering paid access or paid courses based on this software
+
+is strictly prohibited without prior **written permission** from the author (Jan Homp).
+
+---
+
+#### 4. DISTRIBUTION AND MODIFICATION
+
+Redistribution of the original or modified code is permitted only if:
+
+* this license and the copyright notice remain unchanged and included
+* the distribution is **non-commercial**
+* no institutional or commercial use is enabled without permission
+
+Modifications are allowed for personal use but may not be commercially or institutionally exploited without consent.
+
+---
+
+#### 5. LIMITATION OF LIABILITY
+
+In no event shall the author be liable for any damages arising from the use of this software.

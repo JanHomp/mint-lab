@@ -262,7 +262,16 @@ function openModal(exp) {
         </div>
     `).join('');
 
-    const imageHtml = exp.image ? `<img src="${getDirectMediaUrl(exp.image)}" alt="Media" style="width:100%; border-radius:12px; margin-bottom:1rem; object-fit: cover; max-height: 400px;" onerror="this.style.display='none'">` : '';
+    const imageHtml = exp.image ? `
+        <div class="image-wrapper" style="position:relative;">
+            <img src="${getDirectMediaUrl(exp.image)}" alt="Media" id="modal-img" style="width:100%; border-radius:12px; margin-bottom:1rem; object-fit: cover; max-height: 400px;" 
+                onerror="this.style.display='none'; document.getElementById('img-error').style.display='block';">
+            <div id="img-error" style="display:none; background: #334155; padding: 2rem; border-radius: 12px; text-align: center; margin-bottom: 1rem;">
+                <p style="margin-bottom: 1rem;">🖼️ Bild kann nicht geladen werden.<br><small>(Häufig bei Safari/Mac oder Privat-Modus)</small></p>
+                <a href="${exp.image}" target="_blank" class="tag" style="background: var(--primary); text-decoration: none; display: inline-block;">Link direkt prüfen ↗</a>
+            </div>
+        </div>
+    ` : '';
     const videoHtml = getMediaHtml(exp.video);
 
     modalBody.innerHTML = `
@@ -607,6 +616,7 @@ function setupVoiceControl() {
 
 // Start
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("MINT-App Version: 2.1 (Cache-Bypass)");
     try {
         init();
         fetchExperiments(); // Load from Cloud
@@ -699,12 +709,12 @@ function splitCSVLine(line) {
         if (char === '"') {
             inQuotes = !inQuotes;
         } else if (char === ',' && !inQuotes) {
-            result.push(current.trim());
+            result.push(current.trim().replace(/^"|"$/g, ''));
             current = '';
         } else {
             current += char;
         }
     }
-    result.push(current.trim());
+    result.push(current.trim().replace(/^"|"$/g, ''));
     return result;
 }

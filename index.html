@@ -170,44 +170,52 @@
             <div class="content-wrapper">
                 <div style="max-width: 800px; margin: 0 auto; text-align: center; padding: 2rem 0;">
                     <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Experiment teilen</h2>
-                    <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 3rem;">
-                        Haben Sie eine tolle Idee? Werden Sie Teil der MINT Lab Community und teilen Sie Ihre
-                        Experimente mit Kollegen.
+                    <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem;">
+                        Haben Sie eine tolle Idee? Teilen Sie Ihre Experimente mit Kollegen!
                     </p>
 
-                    <div class="upload-steps"
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 4rem; text-align: left;">
-                        <div class="card"
-                            style="padding: 1.5rem; background: var(--bg-card); border-top: 4px solid var(--accent); cursor: default;">
-                            <div style="font-size: 2rem; margin-bottom: 1rem;">1. 📝 Formular</div>
-                            <p style="font-size: 0.95rem; color: var(--text-muted);">Nutzen Sie unser Google Formular,
-                                um Titel, Fach und Anleitung einzugeben.</p>
-                        </div>
-                        <div class="card"
-                            style="padding: 1.5rem; background: var(--bg-card); border-top: 4px solid var(--success); cursor: default;">
-                            <div style="font-size: 2rem; margin-bottom: 1rem;">2. 🛡️ Prüfung</div>
-                            <p style="font-size: 0.95rem; color: var(--text-muted);">Ein Admin (Sie!) prüft den
-                                Vorschlag in der Google Tabelle und gibt ihn frei.</p>
-                        </div>
-                        <div class="card"
-                            style="padding: 1.5rem; background: var(--bg-card); border-top: 4px solid var(--warning); cursor: default;">
-                            <div style="font-size: 2rem; margin-bottom: 1rem;">3. 🚀 Live</div>
-                            <p style="font-size: 0.95rem; color: var(--text-muted);">Sobald das "x" gesetzt ist,
-                                erscheint das Experiment automatisch in der App.</p>
-                        </div>
-                    </div>
-
+                    <!-- Main CTA Button - Above the fold -->
                     <div
-                        style="background: var(--bg-card); padding: 3rem; border-radius: var(--radius-lg); border: 1px solid var(--border);">
-                        <button id="btn-open-form" class="btn-primary" style="font-size: 1.4rem; padding: 1rem 3rem;">
-                            Jetzt Vorschlag senden ↗
+                        style="background: var(--bg-card); padding: 2.5rem; border-radius: var(--radius-lg); border: 2px solid var(--accent); margin-bottom: 3rem; box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);">
+                        <button id="btn-open-form" class="btn-primary"
+                            style="font-size: 1.6rem; padding: 1.2rem 3.5rem; margin-bottom: 1rem;">
+                            📤 Jetzt Vorschlag senden
                         </button>
-                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 1.5rem;">
-                            (Sie werden zu Google Forms weitergeleitet)
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">
+                            (Öffnet Google Forms in neuem Tab)
                         </p>
                     </div>
 
-                    <button id="btn-cancel-upload" class="btn-secondary" style="margin-top: 3rem;">
+                    <!-- How it works - Below -->
+                    <details style="text-align: left; margin-bottom: 2rem;">
+                        <summary
+                            style="cursor: pointer; font-size: 1.1rem; font-weight: 600; color: var(--accent); margin-bottom: 1rem;">
+                            ℹ️ Wie funktioniert der Upload-Prozess?
+                        </summary>
+                        <div class="upload-steps"
+                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; text-align: left;">
+                            <div class="card"
+                                style="padding: 1.5rem; background: var(--bg-card); border-top: 4px solid var(--accent); cursor: default;">
+                                <div style="font-size: 2rem; margin-bottom: 1rem;">1. 📝 Formular</div>
+                                <p style="font-size: 0.95rem; color: var(--text-muted);">Nutzen Sie unser Google
+                                    Formular, um Titel, Fach und Anleitung einzugeben.</p>
+                            </div>
+                            <div class="card"
+                                style="padding: 1.5rem; background: var(--bg-card); border-top: 4px solid var(--success); cursor: default;">
+                                <div style="font-size: 2rem; margin-bottom: 1rem;">2. 🛡️ Prüfung</div>
+                                <p style="font-size: 0.95rem; color: var(--text-muted);">Ein Admin (Sie!) prüft den
+                                    Vorschlag in der Google Tabelle und gibt ihn frei.</p>
+                            </div>
+                            <div class="card"
+                                style="padding: 1.5rem; background: var(--bg-card); border-top: 4px solid var(--warning); cursor: default;">
+                                <div style="font-size: 2rem; margin-bottom: 1rem;">3. 🚀 Live</div>
+                                <p style="font-size: 0.95rem; color: var(--text-muted);">Sobald das "x" gesetzt ist,
+                                    erscheint das Experiment automatisch in der App.</p>
+                            </div>
+                        </div>
+                    </details>
+
+                    <button id="btn-cancel-upload" class="btn-secondary" style="margin-top: 2rem;">
                         ← Zurück zur Übersicht
                     </button>
                 </div>

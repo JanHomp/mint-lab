@@ -575,14 +575,18 @@ function setupVoiceControl() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     recognition = new SpeechRecognition();
     recognition.lang = 'de-DE';
-    recognition.continuous = false;
+    recognition.continuous = true;
     recognition.interimResults = false;
 
+    let isListening = false;
+
     recognition.onresult = (event) => {
-        const command = event.results[0][0].transcript.toLowerCase();
+        // Get the last result
+        const lastResultIndex = event.results.length - 1;
+        const command = event.results[lastResultIndex][0].transcript.toLowerCase();
         console.log("Voice Command:", command);
 
-        // Show visual feedback instead of alert
+        // Visual feedback
         const originalTitle = btnVoice.title;
         btnVoice.title = "Erkannt: " + command;
         setTimeout(() => btnVoice.title = originalTitle, 2000);
@@ -594,20 +598,21 @@ function setupVoiceControl() {
         } else if (command.includes('zurück') || command.includes('reset')) {
             resetTimer();
         }
-
-        btnVoice.classList.remove('listening');
+        // Note: We don't remove 'listening' class here anymore for continuous mode
     };
 
     recognition.onend = () => {
+        isListening = false;
         btnVoice.classList.remove('listening');
     };
 
     recognition.onerror = (e) => {
         console.error(e);
+        isListening = false;
         btnVoice.classList.remove('listening');
 
         if (e.error === 'not-allowed') {
-            alert("⚠️ Mikrofon-Zugriff verweigert.\n\nDa diese App lokal läuft (ohne Server), blockiert der Browser das eventuell. Auf einem Webserver würde es funktionieren.");
+            alert("⚠️ Mikrofon-Zugriff verweigert.\n\nSpracherkennung benötigt oft eine sichere HTTPS-Verbindung.");
         } else if (e.error === 'network') {
             alert("⚠️ Netzwerk/Sicherheits-Fehler.\n\nSpracherkennung benötigt oft eine sichere HTTPS-Verbindung.");
         }
@@ -615,8 +620,15 @@ function setupVoiceControl() {
 
     btnVoice.addEventListener('click', () => {
         try {
-            recognition.start();
-            btnVoice.classList.add('listening');
+            if (!isListening) {
+                recognition.start();
+                isListening = true;
+                btnVoice.classList.add('listening');
+            } else {
+                recognition.stop();
+                isListening = false;
+                btnVoice.classList.remove('listening');
+            }
         } catch (e) {
             console.log(e);
         }

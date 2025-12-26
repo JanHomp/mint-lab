@@ -637,39 +637,51 @@ function fetchExperiments() {
 }
 
 function parseCSV(text) {
-    const lines = text.split('\n');
-    const result = [];
+    const lines = text.trim().split('\n');
+    if (lines.length < 2) return [];
 
-    // Skip Header (Line 0)
+    // Header Zeile finden
+    const headers = lines[0].match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g).map(h => h.replace(/^"|"$/g, '').trim().toLowerCase());
+
+    // Spalten-Indizes finden
+    const idx = {
+        freigabe: headers.findIndex(h => h.includes('freigabe')),
+        titel: headers.findIndex(h => h.includes('titel')),
+        fach: headers.findIndex(h => h.includes('fach')),
+        klasse: headers.findIndex(h => h.includes('klasse')),
+        dauer: headers.findIndex(h => h.includes('dauer')),
+        bild: headers.findIndex(h => h.includes('bild')),
+        video: headers.findIndex(h => h.includes('video')),
+        desc: headers.findIndex(h => h.includes('beschreibung')),
+        material: headers.findIndex(h => h.includes('material')),
+        schritte: headers.findIndex(h => h.includes('schritte')),
+        sicherheit: headers.findIndex(h => h.includes('sicherheit'))
+    };
+
+    console.log("Erkannte Cloud-Spalten:", idx);
+
+    const result = [];
     for (let i = 1; i < lines.length; i++) {
         const row = lines[i].match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
         if (!row) continue;
 
         const clean = row.map(val => val.replace(/^"|"$/g, '').trim());
 
-        // Automatische Erkennung: Wo steht das 'x'?
-        let offset = -1;
-        if (clean[0] && clean[0].toLowerCase() === 'x') {
-            offset = 0; // Kein Zeitstempel, 'x' steht ganz vorne (Spalte A)
-        } else if (clean[1] && clean[1].toLowerCase() === 'x') {
-            offset = 1; // Zeitstempel in A, 'x' steht in Spalte B
-        }
-
-        // Wenn kein 'x' gefunden wurde, ignorieren wir die Zeile
-        if (offset === -1) continue;
+        // Nur importieren, wenn Freigabe 'x' ist
+        if (idx.freigabe === -1 || !clean[idx.freigabe] || clean[idx.freigabe].toLowerCase() !== 'x') continue;
 
         result.push({
             id: 'cloud-' + i,
-            title: clean[offset + 1],
-            subject: clean[offset + 2],
-            grade: clean[offset + 3],
-            duration: clean[offset + 4],
-            image: clean[offset + 5] || '',
-            video: clean[offset + 6] || '',
-            description: clean[offset + 7],
-            materials: clean[offset + 8] ? clean[offset + 8].split(',').map(s => s.trim()) : [],
-            steps: clean[offset + 9] ? clean[offset + 9].split(',').map(s => s.trim()) : [],
-            safety: clean[offset + 10] || ''
+            title: clean[idx.titel] || 'Unbekanntes Experiment',
+            subject: clean[idx.fach] || 'Allgemein',
+            grade: clean[idx.klasse] || '-',
+            duration: clean[idx.dauer] || '-',
+            image: idx.bild !== -1 ? clean[idx.bild] : '',
+            video: idx.video !== -1 ? clean[idx.video] : '',
+            description: idx.desc !== -1 ? clean[idx.desc] : '',
+            materials: (idx.material !== -1 && clean[idx.material]) ? clean[idx.material].split(',').map(s => s.trim()) : [],
+            steps: (idx.schritte !== -1 && clean[idx.schritte]) ? clean[idx.schritte].split(',').map(s => s.trim()) : [],
+            safety: idx.sicherheit !== -1 ? clean[idx.sicherheit] : ''
         });
     }
     return result;

@@ -305,11 +305,11 @@ function getDirectMediaUrl(url) {
 
     // Google Drive: Convert share link to direct link
     if (firstUrl.includes('drive.google.com')) {
-        // Find the ID (33+ chars usually) - look for /d/ or id=
         const idMatch = firstUrl.match(/\/d\/([a-zA-Z0-9_-]{25,})/) || firstUrl.match(/id=([a-zA-Z0-9_-]{25,})/);
         if (idMatch) {
-            // New, more reliable format for Google Drive images
-            return `https://lh3.googleusercontent.com/u/0/d/${idMatch[1]}=w800-h600-iv1`;
+            const finalUrl = `https://drive.google.com/uc?id=${idMatch[1]}`;
+            console.log("MINT-App Drive-Info: Bild-ID erkannt:", idMatch[1]);
+            return finalUrl;
         }
     }
 
@@ -643,8 +643,8 @@ function parseCSV(text) {
     const lines = text.trim().split('\n');
     if (lines.length < 2) return [];
 
-    // Header Zeile finden
-    const headers = lines[0].match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g).map(h => h.replace(/^"|"$/g, '').trim().toLowerCase());
+    // Header Zeile finden - WICHTIG: Korrekte Trennung bei leeren Feldern
+    const headers = splitCSVLine(lines[0]).map(h => h.toLowerCase());
 
     // Spalten-Indizes finden
     const idx = {
@@ -661,31 +661,50 @@ function parseCSV(text) {
         sicherheit: headers.findIndex(h => h.includes('sicherheit'))
     };
 
-    console.log("Erkannte Cloud-Spalten:", idx);
+    console.log("MINT-App Spalten-Mapping:", idx);
 
     const result = [];
     for (let i = 1; i < lines.length; i++) {
-        const row = lines[i].match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
-        if (!row) continue;
-
-        const clean = row.map(val => val.replace(/^"|"$/g, '').trim());
+        const row = splitCSVLine(lines[i]);
+        if (row.length < 2) continue;
 
         // Nur importieren, wenn Freigabe 'x' ist
-        if (idx.freigabe === -1 || !clean[idx.freigabe] || clean[idx.freigabe].toLowerCase() !== 'x') continue;
+        if (idx.freigabe === -1 || !row[idx.freigabe] || row[idx.freigabe].toLowerCase() !== 'x') continue;
 
         result.push({
             id: 'cloud-' + i,
-            title: clean[idx.titel] || 'Unbekanntes Experiment',
-            subject: clean[idx.fach] || 'Allgemein',
-            grade: clean[idx.klasse] || '-',
-            duration: clean[idx.dauer] || '-',
-            image: idx.bild !== -1 ? clean[idx.bild] : '',
-            video: idx.video !== -1 ? clean[idx.video] : '',
-            description: idx.desc !== -1 ? clean[idx.desc] : '',
-            materials: (idx.material !== -1 && clean[idx.material]) ? clean[idx.material].split(',').map(s => s.trim()) : [],
-            steps: (idx.schritte !== -1 && clean[idx.schritte]) ? clean[idx.schritte].split(',').map(s => s.trim()) : [],
-            safety: idx.sicherheit !== -1 ? clean[idx.sicherheit] : ''
+            title: row[idx.titel] || 'Unbekanntes Experiment',
+            subject: row[idx.fach] || 'Allgemein',
+            grade: row[idx.klasse] || '-',
+            duration: row[idx.dauer] || '-',
+            image: idx.bild !== -1 ? row[idx.bild] : '',
+            video: idx.video !== -1 ? row[idx.video] : '',
+            description: row[idx.desc] || '',
+            materials: (idx.material !== -1 && row[idx.material]) ? row[idx.material].split(',').map(s => s.trim()) : [],
+            steps: (idx.schritte !== -1 && row[idx.schritte]) ? row[idx.schritte].split(',').map(s => s.trim()) : [],
+            safety: idx.sicherheit !== -1 ? row[idx.sicherheit] : ''
         });
     }
+    return result;
+}
+
+// Helfer für korrektes CSV-Splitting (auch bei leeren Feldern)
+function splitCSVLine(line) {
+    const result = [];
+    let current = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        if (char === '"') {
+            inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+            result.push(current.trim());
+            current = '';
+        } else {
+            current += char;
+        }
+    }
+    result.push(current.trim());
     return result;
 }

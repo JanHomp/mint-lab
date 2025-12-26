@@ -307,7 +307,10 @@ function getDirectMediaUrl(url) {
     if (firstUrl.includes('drive.google.com')) {
         // Find the ID (33+ chars usually) - look for /d/ or id=
         const idMatch = firstUrl.match(/\/d\/([a-zA-Z0-9_-]{25,})/) || firstUrl.match(/id=([a-zA-Z0-9_-]{25,})/);
-        if (idMatch) return `https://drive.google.com/uc?id=${idMatch[1]}`;
+        if (idMatch) {
+            // New, more reliable format for Google Drive images
+            return `https://lh3.googleusercontent.com/u/0/d/${idMatch[1]}=w800-h600-iv1`;
+        }
     }
 
     // YouTube Thumbnail

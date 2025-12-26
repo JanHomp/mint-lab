@@ -37,6 +37,7 @@ body.light-mode .hero {
 body.light-mode .hero h1 {
     background: linear-gradient(to right, #0f172a, #475569);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -122,6 +123,98 @@ nav {
     border-bottom: 2px solid var(--accent);
 }
 
+/* PWA Banner */
+.pwa-banner {
+    background: linear-gradient(135deg, var(--bg-card) 0%, #1e293b 100%);
+    border-bottom: 1px solid var(--accent);
+    padding: 0.75rem 1rem;
+    display: none;
+    /* Shown via JS */
+    animation: slideDown 0.5s ease-out;
+    position: relative;
+    z-index: 1001;
+}
+
+.pwa-banner-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.pwa-icon {
+    font-size: 1.5rem;
+}
+
+.pwa-text {
+    flex: 1;
+}
+
+.pwa-text strong {
+    display: block;
+    color: var(--accent);
+    font-size: 0.95rem;
+}
+
+.pwa-text p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.pwa-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-banner {
+    background: var(--accent);
+    color: #0f172a;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-banner:hover {
+    transform: scale(1.05);
+}
+
+.btn-close-banner {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0 0.5rem;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 600px) {
+    .pwa-text p {
+        display: none;
+        /* Hide subtext on very small screens */
+    }
+
+    .pwa-banner-content {
+        gap: 0.5rem;
+    }
+}
+
 /* Hero */
 .hero {
     text-align: center;
@@ -134,6 +227,7 @@ nav {
     margin-bottom: 1rem;
     background: linear-gradient(to right, #fff, #94a3b8);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -160,6 +254,21 @@ nav {
     outline: none;
     border-color: var(--accent);
     box-shadow: 0 0 30px var(--accent-glow);
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 2.5rem 1rem;
+    }
+
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .search-bar input {
+        font-size: 1rem;
+        padding: 0.8rem 1.2rem;
+    }
 }
 
 /* Layout */
@@ -563,9 +672,23 @@ nav {
         margin-bottom: 1rem;
     }
 
-    /* Hide hover effects on touch to prevent sticky states */
     .card:hover {
         transform: none;
+    }
+
+    /* Modal Mobile Adjustments */
+    .modal-content {
+        padding: 1.5rem;
+        width: 95%;
+        margin: 10px;
+    }
+
+    .detail-title {
+        font-size: 1.5rem;
+    }
+
+    .experiments-grid {
+        gap: 1rem;
     }
 }
 

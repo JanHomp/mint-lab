@@ -18,6 +18,19 @@
 </head>
 
 <body>
+    <div id="pwa-banner" class="pwa-banner">
+        <div class="pwa-banner-content">
+            <span class="pwa-icon">📱</span>
+            <div class="pwa-text">
+                <strong>MINT Lab als App nutzen?</strong>
+                <p>Installieren Sie die Seite auf Ihrem Homescreen für schnellen Zugriff & Offline-Modus.</p>
+            </div>
+            <div class="pwa-actions">
+                <button id="btn-pwa-help" class="btn-banner">Anleitung</button>
+                <button id="btn-pwa-close" class="btn-close-banner">&times;</button>
+            </div>
+        </div>
+    </div>
 
     <header class="app-header">
         <div class="logo" id="btn-logo" style="cursor: pointer;">
@@ -29,9 +42,12 @@
             <button id="btn-tools" class="nav-link">Tools</button>
             <button id="btn-upload" class="nav-link">Hochladen</button>
         </nav>
-        <div class="user-actions" style="display: flex; gap: 1rem; align-items: center;">
-            <button id="btn-theme-toggle"
-                style="background:none; border:none; font-size: 1.2rem; cursor: pointer;">☀️</button>
+        <div class="user-actions" style="display: flex; gap: 0.8rem; align-items: center;">
+            <button id="btn-theme-toggle" style="background:none; border:none; font-size: 1.2rem; cursor: pointer;"
+                title="Farbschema ändern">☀️</button>
+            <button id="btn-show-help"
+                style="background:rgba(56, 189, 248, 0.1); border:1px solid var(--accent); color:var(--accent); width: 32px; height: 32px; border-radius: 50%; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;"
+                title="Installations-Hilfe">?</button>
             <div class="user-profile" id="btn-profile" style="cursor: pointer;">
                 <div class="avatar">👨‍🏫</div>
             </div>
@@ -175,6 +191,40 @@
             <input type="text" id="profile-name" placeholder="Ihr Name (z.B. Hr. Müller)"
                 style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-dark); color: var(--text-main); margin-bottom: 1rem;">
             <button class="btn-primary" id="save-profile" style="width: 100%;">Speichern</button>
+        </div>
+    </div>
+
+    <!-- Modal for Help / Installation -->
+    <div id="help-modal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <span class="close-modal" id="close-help">&times;</span>
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">📱</div>
+                <h2>App installieren</h2>
+                <p style="color: var(--text-muted);">Nutzen Sie die App wie eine echte App auf Ihrem Homescreen!</p>
+            </div>
+
+            <div class="detail-section">
+                <h3>🍏 iPhone / iPad (Safari)</h3>
+                <ol style="margin-left: 1.2rem; padding-left: 0;">
+                    <li>Tippen Sie unten auf das <strong>Teilen-Icon</strong> (Quadrat mit Pfeil).</li>
+                    <li>Suchen Sie den Punkt <strong>"Zum Home-Bildschirm"</strong>.</li>
+                    <li>Tippen Sie oben rechts auf <strong>Hinzufügen</strong>.</li>
+                </ol>
+            </div>
+
+            <div class="detail-section">
+                <h3>🤖 Android (Chrome)</h3>
+                <ol style="margin-left: 1.2rem; padding-left: 0;">
+                    <li>Tippen Sie oben rechts auf die <strong>drei Punkte</strong> (Menü).</li>
+                    <li>Wählen Sie <strong>"App installieren"</strong> oder "Zum Startbildschirm hinzufügen".</li>
+                </ol>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="btn-primary"
+                    onclick="document.getElementById('help-modal').classList.remove('active')">Verstanden!</button>
+            </div>
         </div>
     </div>
 

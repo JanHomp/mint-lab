@@ -62,6 +62,28 @@ let countDownMode = false;
 
 /* Initialization */
 function init() {
+    // PWA Banner Logic
+    const pwaBanner = document.getElementById('pwa-banner');
+    const btnPwaClose = document.getElementById('btn-pwa-close');
+    const btnPwaHelp = document.getElementById('btn-pwa-help');
+
+    if (pwaBanner && !localStorage.getItem('pwa-banner-dismissed')) {
+        pwaBanner.style.display = 'block';
+    }
+
+    if (btnPwaClose) {
+        btnPwaClose.addEventListener('click', () => {
+            pwaBanner.style.display = 'none';
+            localStorage.setItem('pwa-banner-dismissed', 'true');
+        });
+    }
+
+    if (btnPwaHelp) {
+        btnPwaHelp.addEventListener('click', () => {
+            document.getElementById('help-modal').classList.add('active');
+        });
+    }
+
     // Assign DOM Elements
     container = document.getElementById('experiments-container');
     filterSubject = document.getElementById('filter-subject');
@@ -78,10 +100,12 @@ function init() {
     btnHome = document.getElementById('btn-home');
     btnTools = document.getElementById('btn-tools');
     btnUpload = document.getElementById('btn-upload');
-    btnLogo = document.getElementById('btn-logo');
-    btnInspire = document.getElementById('btn-inspire');
+    const btnInspire = document.getElementById('btn-inspire');
+    const btnShowHelp = document.getElementById('btn-show-help');
+    const helpModal = document.getElementById('help-modal');
+    const closeHelp = document.getElementById('close-help');
 
-    // Restore missing assignments
+    // Navigation / Theme Assignments
     btnThemeToggle = document.getElementById('btn-theme-toggle');
     profileModal = document.getElementById('profile-modal');
     btnProfile = document.getElementById('btn-profile');
@@ -95,7 +119,7 @@ function init() {
 
     renderExperiments(experiments);
     loadFavorites();
-    loadProfile(); // Re-enabled
+    loadProfile();
     loadTheme();
 
     // PWA Service Worker Registration
@@ -112,89 +136,94 @@ function init() {
         modal.classList.remove('active');
     });
 
-    // Close modal on outside click
+    // Modal Close logic for all modals (Consolidated)
     window.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.classList.remove('active');
-        }
-        if (e.target === profileModal) {
-            profileModal.classList.remove('active');
-        }
+        if (e.target === modal) modal.classList.remove('active');
+        if (e.target === profileModal) profileModal.classList.remove('active');
+        if (e.target === helpModal) helpModal.classList.remove('active');
     });
 
-    // Close profile modal
+    // Close buttons for modals
     document.getElementById('close-profile').addEventListener('click', () => {
         profileModal.classList.remove('active');
     });
 
-    // Navigation
+    closeHelp.addEventListener('click', () => {
+        helpModal.classList.remove('active');
+    });
+
+    // Navigation Buttons
     btnHome.addEventListener('click', () => switchView('discovery'));
     btnLogo.addEventListener('click', () => switchView('discovery'));
     btnTools.addEventListener('click', () => switchView('tools'));
     btnUpload.addEventListener('click', () => switchView('upload'));
 
-    // Inspire Me
     btnInspire.addEventListener('click', () => {
         const randomExp = experiments[Math.floor(Math.random() * experiments.length)];
         openModal(randomExp);
     });
 
-    // Favorites Handler
-    document.getElementById('btn-add-favorites').addEventListener('click', toggleFavorite);
-
-    // PDF Handler (Mock)
-    document.getElementById('btn-download-pdf').addEventListener('click', () => {
-        alert("Dies ist eine Demo.\nIn der Vollversion würde hier ein PDF erstellt.");
-        window.print(); // Simple fallback
+    btnShowHelp.addEventListener('click', () => {
+        helpModal.classList.add('active');
     });
-
-    // Upload Handler (Redirect to Google Form)
-    const formBtn = document.getElementById('btn-open-form');
-    if (formBtn) {
-        formBtn.addEventListener('click', () => {
-            // TODO: REPLACE WITH YOUR GOOGLE FORM LINK
-            const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdhTwZrjMyORTLlA0UGaeZLdJDnCTz0E5wsLT1NJCY1iVOSTA/viewform";
-            if (formUrl === "https://docs.google.com/forms/") {
-                alert("Bitte fügen Sie erst Ihren Google Forms Link in script.js ein!");
-            } else {
-                window.open(formUrl, '_blank');
-            }
-        });
-    }
-
-    // Stopwatch Handlers
-    document.getElementById('btn-start').addEventListener('click', startTimer);
-    document.getElementById('btn-stop').addEventListener('click', stopTimer);
-    document.getElementById('btn-reset').addEventListener('click', resetTimer);
-
-    // Timer Presets
-    document.querySelectorAll('.btn-preset').forEach(btn => {
-        btn.addEventListener('click', () => {
-            resetTimer();
-            const sec = parseInt(btn.dataset.time);
-            elapsed = sec * 1000;
-            countDownMode = true; // Flag for countdown behavior if we wanted to implement real countdown logic
-            // For now, just setting the time to show it works as a preset or start point
-            updateTimerDisplay();
-            // Optional: Auto-start? Let's just set it for now.
-        });
-    });
-
-    // Converter Handler
-    document.getElementById('btn-convert').addEventListener('click', convertUnits);
-
-    // Voice Handler
-    setupVoiceControl();
-
-    // Theme Handler
-    btnThemeToggle.addEventListener('click', toggleTheme);
-
-    // Profile Handler
-    btnProfile.addEventListener('click', () => {
-        profileModal.classList.add('active');
-    });
-    btnSaveProfile.addEventListener('click', saveProfile);
 }
+
+// Favorites Handler
+document.getElementById('btn-add-favorites').addEventListener('click', toggleFavorite);
+
+// PDF Handler (Mock)
+document.getElementById('btn-download-pdf').addEventListener('click', () => {
+    alert("Dies ist eine Demo.\nIn der Vollversion würde hier ein PDF erstellt.");
+    window.print(); // Simple fallback
+});
+
+// Upload Handler (Redirect to Google Form)
+const formBtn = document.getElementById('btn-open-form');
+if (formBtn) {
+    formBtn.addEventListener('click', () => {
+        // TODO: REPLACE WITH YOUR GOOGLE FORM LINK
+        const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdhTwZrjMyORTLlA0UGaeZLdJDnCTz0E5wsLT1NJCY1iVOSTA/viewform";
+        if (formUrl === "https://docs.google.com/forms/") {
+            alert("Bitte fügen Sie erst Ihren Google Forms Link in script.js ein!");
+        } else {
+            window.open(formUrl, '_blank');
+        }
+    });
+}
+
+// Stopwatch Handlers
+document.getElementById('btn-start').addEventListener('click', startTimer);
+document.getElementById('btn-stop').addEventListener('click', stopTimer);
+document.getElementById('btn-reset').addEventListener('click', resetTimer);
+
+// Timer Presets
+document.querySelectorAll('.btn-preset').forEach(btn => {
+    btn.addEventListener('click', () => {
+        resetTimer();
+        const sec = parseInt(btn.dataset.time);
+        elapsed = sec * 1000;
+        countDownMode = true; // Flag for countdown behavior if we wanted to implement real countdown logic
+        // For now, just setting the time to show it works as a preset or start point
+        updateTimerDisplay();
+        // Optional: Auto-start? Let's just set it for now.
+    });
+});
+
+// Converter Handler
+document.getElementById('btn-convert').addEventListener('click', convertUnits);
+
+// Voice Handler
+setupVoiceControl();
+
+// Theme Handler
+btnThemeToggle.addEventListener('click', toggleTheme);
+
+// Profile Handler
+btnProfile.addEventListener('click', () => {
+    profileModal.classList.add('active');
+});
+btnSaveProfile.addEventListener('click', saveProfile);
+
 
 /* Rendering */
 function renderExperiments(data) {

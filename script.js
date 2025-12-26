@@ -62,33 +62,14 @@ let countDownMode = false;
 
 /* Initialization */
 function init() {
-    // PWA Banner Logic
-    const pwaBanner = document.getElementById('pwa-banner');
-    const btnPwaClose = document.getElementById('btn-pwa-close');
-    const btnPwaHelp = document.getElementById('btn-pwa-help');
+    console.log("MINT-App: Initialisiere DOM Elemente...");
 
-    if (pwaBanner && !localStorage.getItem('pwa-banner-dismissed')) {
-        pwaBanner.style.display = 'block';
-    }
-
-    if (btnPwaClose) {
-        btnPwaClose.addEventListener('click', () => {
-            pwaBanner.style.display = 'none';
-            localStorage.setItem('pwa-banner-dismissed', 'true');
-        });
-    }
-
-    if (btnPwaHelp) {
-        btnPwaHelp.addEventListener('click', () => {
-            document.getElementById('help-modal').classList.add('active');
-        });
-    }
-
-    // Assign DOM Elements
+    // 1. Assign global elements
     container = document.getElementById('experiments-container');
     filterSubject = document.getElementById('filter-subject');
     filterGrade = document.getElementById('filter-grade');
     searchInput = document.getElementById('search-input');
+
     modal = document.getElementById('detail-modal');
     modalBody = document.getElementById('modal-body');
     closeModal = document.querySelector('#detail-modal .close-modal');
@@ -100,125 +81,127 @@ function init() {
     btnHome = document.getElementById('btn-home');
     btnTools = document.getElementById('btn-tools');
     btnUpload = document.getElementById('btn-upload');
-    const btnInspire = document.getElementById('btn-inspire');
-    const btnShowHelp = document.getElementById('btn-show-help');
-    const helpModal = document.getElementById('help-modal');
-    const closeHelp = document.getElementById('close-help');
+    btnLogo = document.getElementById('btn-logo');
+    btnInspire = document.getElementById('btn-inspire');
 
-    // Navigation / Theme Assignments
     btnThemeToggle = document.getElementById('btn-theme-toggle');
     profileModal = document.getElementById('profile-modal');
     btnProfile = document.getElementById('btn-profile');
     btnSaveProfile = document.getElementById('save-profile');
     profileNameInput = document.getElementById('profile-name');
 
-    // Cancel Upload
-    document.getElementById('btn-cancel-upload').addEventListener('click', () => {
-        switchView('discovery');
-    });
+    // These are local to init mostly
+    const pwaBanner = document.getElementById('pwa-banner');
+    const btnPwaClose = document.getElementById('btn-pwa-close');
+    const btnPwaHelp = document.getElementById('btn-pwa-help');
+    const btnShowHelp = document.getElementById('btn-show-help');
+    const helpModal = document.getElementById('help-modal');
+    const closeHelp = document.getElementById('close-help');
 
-    renderExperiments(experiments);
+    // 2. State & Initial Render
     loadFavorites();
     loadProfile();
     loadTheme();
+    renderExperiments(experiments);
 
-    // PWA Service Worker Registration
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js');
+    // 3. Event Listeners (Safe implementation)
+    const safeAddListener = (el, event, handler) => {
+        if (el) el.addEventListener(event, handler);
+        else console.warn("Element missing for listener:", event);
+    };
+
+    if (pwaBanner && !localStorage.getItem('pwa-banner-dismissed')) {
+        pwaBanner.style.display = 'block';
     }
 
-    // Event Listeners
-    filterSubject.addEventListener('change', filterExperiments);
-    filterGrade.addEventListener('change', filterExperiments);
-    searchInput.addEventListener('input', filterExperiments);
-
-    closeModal.addEventListener('click', () => {
-        modal.classList.remove('active');
+    safeAddListener(btnPwaClose, 'click', () => {
+        pwaBanner.style.display = 'none';
+        localStorage.setItem('pwa-banner-dismissed', 'true');
     });
 
-    // Modal Close logic for all modals (Consolidated)
-    window.addEventListener('click', (e) => {
-        if (e.target === modal) modal.classList.remove('active');
-        if (e.target === profileModal) profileModal.classList.remove('active');
-        if (e.target === helpModal) helpModal.classList.remove('active');
+    safeAddListener(btnPwaHelp, 'click', () => {
+        if (helpModal) helpModal.classList.add('active');
     });
 
-    // Close buttons for modals
-    document.getElementById('close-profile').addEventListener('click', () => {
-        profileModal.classList.remove('active');
+    safeAddListener(btnShowHelp, 'click', () => {
+        if (helpModal) helpModal.classList.add('active');
     });
 
-    closeHelp.addEventListener('click', () => {
-        helpModal.classList.remove('active');
+    safeAddListener(closeHelp, 'click', () => {
+        if (helpModal) helpModal.classList.remove('active');
     });
 
-    // Navigation Buttons
-    btnHome.addEventListener('click', () => switchView('discovery'));
-    btnLogo.addEventListener('click', () => switchView('discovery'));
-    btnTools.addEventListener('click', () => switchView('tools'));
-    btnUpload.addEventListener('click', () => switchView('upload'));
+    // Close buttons for other modals
+    safeAddListener(document.getElementById('close-profile'), 'click', () => {
+        if (profileModal) profileModal.classList.remove('active');
+    });
 
-    btnInspire.addEventListener('click', () => {
+    safeAddListener(closeModal, 'click', () => {
+        if (modal) modal.classList.remove('active');
+    });
+
+    // Navigation
+    safeAddListener(btnHome, 'click', () => switchView('discovery'));
+    safeAddListener(btnLogo, 'click', () => switchView('discovery'));
+    safeAddListener(btnTools, 'click', () => switchView('tools'));
+    safeAddListener(btnUpload, 'click', () => switchView('upload'));
+
+    safeAddListener(btnInspire, 'click', () => {
         const randomExp = experiments[Math.floor(Math.random() * experiments.length)];
         openModal(randomExp);
     });
 
-    btnShowHelp.addEventListener('click', () => {
-        helpModal.classList.add('active');
+    // Global Modal Close (Consolidated)
+    window.addEventListener('click', (e) => {
+        if (modal && e.target === modal) modal.classList.remove('active');
+        if (profileModal && e.target === profileModal) profileModal.classList.remove('active');
+        if (helpModal && e.target === helpModal) helpModal.classList.remove('active');
     });
 
-    // Favorites Handler
-    document.getElementById('btn-add-favorites').addEventListener('click', toggleFavorite);
+    // Sub-Handlers
+    safeAddListener(filterSubject, 'change', filterExperiments);
+    safeAddListener(filterGrade, 'change', filterExperiments);
+    safeAddListener(searchInput, 'input', filterExperiments);
 
-    // PDF Handler (Mock)
-    document.getElementById('btn-download-pdf').addEventListener('click', () => {
+    safeAddListener(document.getElementById('btn-cancel-upload'), 'click', () => switchView('discovery'));
+    safeAddListener(document.getElementById('btn-add-favorites'), 'click', toggleFavorite);
+
+    safeAddListener(document.getElementById('btn-download-pdf'), 'click', () => {
         alert("Dies ist eine Demo.\nIn der Vollversion würde hier ein PDF erstellt.");
-        window.print(); // Simple fallback
+        window.print();
     });
 
-    // Upload Handler (Redirect to Google Form)
     const formBtn = document.getElementById('btn-open-form');
-    if (formBtn) {
-        formBtn.addEventListener('click', () => {
-            const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdhTwZrjMyORTLlA0UGaeZLdJDnCTz0E5wsLT1NJCY1iVOSTA/viewform";
-            if (formUrl === "https://docs.google.com/forms/") {
-                alert("Bitte fügen Sie erst Ihren Google Forms Link in script.js ein!");
-            } else {
-                window.open(formUrl, '_blank');
-            }
-        });
-    }
+    safeAddListener(formBtn, 'click', () => {
+        const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdhTwZrjMyORTLlA0UGaeZLdJDnCTz0E5wsLT1NJCY1iVOSTA/viewform";
+        if (formUrl === "https://docs.google.com/forms/") {
+            alert("Bitte fügen Sie erst Ihren Google Forms Link in script.js ein!");
+        } else {
+            window.open(formUrl, '_blank');
+        }
+    });
 
-    // Stopwatch Handlers
-    document.getElementById('btn-start').addEventListener('click', startTimer);
-    document.getElementById('btn-stop').addEventListener('click', stopTimer);
-    document.getElementById('btn-reset').addEventListener('click', resetTimer);
+    // Tools Handlers
+    safeAddListener(document.getElementById('btn-start'), 'click', startTimer);
+    safeAddListener(document.getElementById('btn-stop'), 'click', stopTimer);
+    safeAddListener(document.getElementById('btn-reset'), 'click', resetTimer);
 
-    // Timer Presets
     document.querySelectorAll('.btn-preset').forEach(btn => {
         btn.addEventListener('click', () => {
             resetTimer();
-            const sec = parseInt(btn.dataset.time);
-            elapsed = sec * 1000;
-            countDownMode = true;
+            elapsed = parseInt(btn.dataset.time) * 1000;
             updateTimerDisplay();
         });
     });
 
-    // Converter Handler
-    document.getElementById('btn-convert').addEventListener('click', convertUnits);
-
-    // Voice Handler
+    safeAddListener(document.getElementById('btn-convert'), 'click', convertUnits);
     setupVoiceControl();
 
-    // Theme Handler
-    btnThemeToggle.addEventListener('click', toggleTheme);
-
-    // Profile Handler
-    btnProfile.addEventListener('click', () => {
-        profileModal.classList.add('active');
+    safeAddListener(btnThemeToggle, 'click', toggleTheme);
+    safeAddListener(btnProfile, 'click', () => {
+        if (profileModal) profileModal.classList.add('active');
     });
-    btnSaveProfile.addEventListener('click', saveProfile);
+    safeAddListener(btnSaveProfile, 'click', saveProfile);
 }
 
 /* Rendering */

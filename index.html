@@ -165,19 +165,50 @@
 
         <!-- Upload View (Google Forms Link) -->
         <div id="view-upload" class="view-section" style="display: none;">
-            <div class="upload-container" style="text-align: center; padding: 2rem;">
-                <h2>Neues Experiment teilen</h2>
-                <p style="margin-bottom: 2rem;">Haben Sie eine tolle Idee für den Unterricht? <br>Senden Sie uns Ihren
-                    Vorschlag über unser Formular!</p>
+            <div class="content-wrapper">
+                <div style="max-width: 800px; margin: 0 auto; text-align: center; padding: 2rem 0;">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Experiment teilen</h2>
+                    <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 3rem;">
+                        Haben Sie eine tolle Idee? Werden Sie Teil der MINT Lab Community und teilen Sie Ihre
+                        Experimente mit Kollegen.
+                    </p>
 
-                <!-- <a href="YOUR_GOOGLE_FORM_LINK_HERE" target="_blank" class="btn-primary" style="text-decoration: none; font-size: 1.2rem;">📝 Zum Formular</a> -->
+                    <div class="upload-steps"
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 4rem; text-align: left;">
+                        <div class="card"
+                            style="padding: 1.5rem; background: var(--bg-card); border-top: 4px solid var(--accent); cursor: default;">
+                            <div style="font-size: 2rem; margin-bottom: 1rem;">1. 📝 Formular</div>
+                            <p style="font-size: 0.95rem; color: var(--text-muted);">Nutzen Sie unser Google Formular,
+                                um Titel, Fach und Anleitung einzugeben.</p>
+                        </div>
+                        <div class="card"
+                            style="padding: 1.5rem; background: var(--bg-card); border-top: 4px solid var(--success); cursor: default;">
+                            <div style="font-size: 2rem; margin-bottom: 1rem;">2. 🛡️ Prüfung</div>
+                            <p style="font-size: 0.95rem; color: var(--text-muted);">Ein Admin (Sie!) prüft den
+                                Vorschlag in der Google Tabelle und gibt ihn frei.</p>
+                        </div>
+                        <div class="card"
+                            style="padding: 1.5rem; background: var(--bg-card); border-top: 4px solid var(--warning); cursor: default;">
+                            <div style="font-size: 2rem; margin-bottom: 1rem;">3. 🚀 Live</div>
+                            <p style="font-size: 0.95rem; color: var(--text-muted);">Sobald das "x" gesetzt ist,
+                                erscheint das Experiment automatisch in der App.</p>
+                        </div>
+                    </div>
 
-                <button id="btn-open-form" class="btn-primary" style="font-size: 1.2rem;">📝 Zum Formular</button>
-                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 1rem;">(Öffnet Google Forms in neuem
-                    Tab)</p>
+                    <div
+                        style="background: var(--bg-card); padding: 3rem; border-radius: var(--radius-lg); border: 1px solid var(--border);">
+                        <button id="btn-open-form" class="btn-primary" style="font-size: 1.4rem; padding: 1rem 3rem;">
+                            Jetzt Vorschlag senden ↗
+                        </button>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 1.5rem;">
+                            (Sie werden zu Google Forms weitergeleitet)
+                        </p>
+                    </div>
 
-                <br><br>
-                <button id="btn-cancel-upload" class="btn-secondary">Zurück</button>
+                    <button id="btn-cancel-upload" class="btn-secondary" style="margin-top: 3rem;">
+                        ← Zurück zur Übersicht
+                    </button>
+                </div>
             </div>
         </div>
     </main>

@@ -806,7 +806,7 @@ nav {
 
     /* Tools adjustments already added earlier; ensure full width buttons */
     .tools-actions { flex-direction: column; align-items: stretch; }
-    .tools-actions .btn-primary, .tools-actions .btn-secondary, .tools-actions #btn-voice { width: 60%; }
+    .tools-actions .btn-primary, .tools-actions .btn-secondary, .tools-actions #btn-voice { width: 30%; }
 
     .close-modal { top: calc(0.6rem + env(safe-area-inset-top, 0px)); right: calc(0.8rem + env(safe-area-inset-right, 0px)); }
     .lightbox-close { top: calc(0.8rem + env(safe-area-inset-top, 0px)); right: calc(0.8rem + env(safe-area-inset-right, 0px)); }

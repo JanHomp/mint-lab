@@ -511,8 +511,10 @@ function updateTimerDisplay() {
     const s = Math.floor((time / 1000) % 60);
     const m = Math.floor((time / (1000 * 60)) % 60);
 
-    document.getElementById('stopwatch-display').textContent =
-        `${pad(m)}:${pad(s)}:${pad(ms)}`;
+    const display = document.getElementById('stopwatch-display');
+    if (display) {
+        display.textContent = `${pad(m)}:${pad(s)}:${pad(ms)}`;
+    }
 }
 
 function pad(n) {
@@ -585,7 +587,7 @@ function saveProfile() {
 
 function loadProfile() {
     const name = localStorage.getItem('mint_username');
-    if (name) {
+    if (name && profileNameInput) {
         profileNameInput.value = name;
     }
 }
@@ -601,9 +603,9 @@ function loadTheme() {
     const theme = localStorage.getItem('mint_theme');
     if (theme === 'light') {
         document.body.classList.add('light-mode');
-        btnThemeToggle.textContent = '🌙';
+        if (btnThemeToggle) btnThemeToggle.textContent = '🌙';
     } else {
-        btnThemeToggle.textContent = '☀️';
+        if (btnThemeToggle) btnThemeToggle.textContent = '☀️';
     }
 }
 
@@ -611,76 +613,83 @@ function loadTheme() {
 // Start
 /* Voice Control Logic */
 function setupVoiceControl() {
-    const btnVoice = document.getElementById('btn-voice');
+    let btnVoice;
+    try {
+        btnVoice = document.getElementById('btn-voice');
+        if (!btnVoice) return; // Button missing — nothing to do
 
-    // Check support
-    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-        btnVoice.style.display = 'none'; // Not supported
-        return;
-    }
-
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    recognition = new SpeechRecognition();
-    recognition.lang = 'de-DE';
-    recognition.continuous = true;
-    recognition.interimResults = false;
-
-    let isListening = false;
-
-    recognition.onresult = (event) => {
-        // Get the last result
-        const lastResultIndex = event.results.length - 1;
-        const command = event.results[lastResultIndex][0].transcript.toLowerCase();
-        console.log("Voice Command:", command);
-
-        // Visual feedback
-        const originalTitle = btnVoice.title;
-        btnVoice.title = "Erkannt: " + command;
-        setTimeout(() => btnVoice.title = originalTitle, 2000);
-
-        if (command.includes('start') || command.includes('los')) {
-            startTimer();
-        } else if (command.includes('stopp') || command.includes('halt')) {
-            stopTimer();
-        } else if (command.includes('zurück') || command.includes('reset')) {
-            resetTimer();
+        // Check support
+        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+            btnVoice.style.display = 'none'; // Not supported
+            return;
         }
-        // Note: We don't remove 'listening' class here anymore for continuous mode
-    };
 
-    recognition.onend = () => {
-        isListening = false;
-        btnVoice.classList.remove('listening');
-    };
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.lang = 'de-DE';
+        recognition.continuous = true;
+        recognition.interimResults = false;
 
-    recognition.onerror = (e) => {
-        console.error(e);
-        isListening = false;
-        btnVoice.classList.remove('listening');
+        let isListening = false;
 
-        if (e.error === 'not-allowed') {
-            alert("⚠️ Mikrofon-Zugriff verweigert.\n\nSpracherkennung benötigt oft eine sichere HTTPS-Verbindung.");
-        } else if (e.error === 'network') {
-            alert("⚠️ Netzwerk/Sicherheits-Fehler.\n\nSpracherkennung benötigt oft eine sichere HTTPS-Verbindung.");
-        }
-    };
+        recognition.onresult = (event) => {
+            // Get the last result
+            const lastResultIndex = event.results.length - 1;
+            const command = event.results[lastResultIndex][0].transcript.toLowerCase();
+            console.log("Voice Command:", command);
 
-    btnVoice.addEventListener('click', () => {
-        try {
-            if (!isListening) {
-                recognition.start();
-                isListening = true;
-                btnVoice.classList.add('listening');
-            } else {
-                recognition.stop();
-                isListening = false;
-                btnVoice.classList.remove('listening');
+            // Visual feedback
+            const originalTitle = btnVoice.title;
+            btnVoice.title = "Erkannt: " + command;
+            setTimeout(() => btnVoice.title = originalTitle, 2000);
+
+            if (command.includes('start') || command.includes('los')) {
+                startTimer();
+            } else if (command.includes('stopp') || command.includes('halt')) {
+                stopTimer();
+            } else if (command.includes('zurück') || command.includes('reset')) {
+                resetTimer();
             }
-        } catch (e) {
-            console.log(e);
-        }
-    });
-}
+            // Note: We don't remove 'listening' class here anymore for continuous mode
+        };
+
+        recognition.onend = () => {
+            isListening = false;
+            btnVoice.classList.remove('listening');
+        };
+
+        recognition.onerror = (e) => {
+            console.error(e);
+            isListening = false;
+            btnVoice.classList.remove('listening');
+
+            if (e.error === 'not-allowed') {
+                alert("⚠️ Mikrofon-Zugriff verweigert.\n\nSpracherkennung benötigt oft eine sichere HTTPS-Verbindung.");
+            } else if (e.error === 'network') {
+                alert("⚠️ Netzwerk/Sicherheits-Fehler.\n\nSpracherkennung benötigt oft eine sichere HTTPS-Verbindung.");
+            }
+        };
+
+        btnVoice.addEventListener('click', () => {
+            try {
+                if (!isListening) {
+                    recognition.start();
+                    isListening = true;
+                    btnVoice.classList.add('listening');
+                } else {
+                    recognition.stop();
+                    isListening = false;
+                    btnVoice.classList.remove('listening');
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        });
+    } catch (e) {
+        console.warn('Voice control init error', e);
+        if (btnVoice) btnVoice.style.display = 'none';
+    }
+}    
 
 // Start
 document.addEventListener('DOMContentLoaded', () => {

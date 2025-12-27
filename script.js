@@ -140,6 +140,29 @@ function init() {
         if (modal) modal.classList.remove('active');
     });
 
+    // Lightbox open/close helpers
+    window.openLightbox = function(url) {
+        try {
+            const lb = document.getElementById('lightbox');
+            const lbImg = document.getElementById('lightbox-img');
+            const lbOpen = document.getElementById('lightbox-open-tab');
+            lbImg.src = url;
+            lbOpen.href = url;
+            lb.setAttribute('aria-hidden', 'false');
+            lb.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        } catch (err) { console.warn('Lightbox error', err); window.open(url, '_blank'); }
+    }
+
+    window.closeLightbox = function() {
+        const lb = document.getElementById('lightbox');
+        if (!lb) return;
+        document.getElementById('lightbox-img').src = '';
+        lb.setAttribute('aria-hidden', 'true');
+        lb.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
     // Navigation
     safeAddListener(btnHome, 'click', () => switchView('discovery'));
     safeAddListener(btnLogo, 'click', () => switchView('discovery'));
@@ -156,6 +179,20 @@ function init() {
         if (modal && e.target === modal) modal.classList.remove('active');
         if (profileModal && e.target === profileModal) profileModal.classList.remove('active');
         if (helpModal && e.target === helpModal) helpModal.classList.remove('active');
+
+        // Click outside image in lightbox closes it
+        const lb = document.getElementById('lightbox');
+        if (lb && e.target === lb) closeLightbox();
+    });
+
+    // Lightbox close button
+    safeAddListener(document, 'click', (e) => {
+        if (e.target && e.target.classList && e.target.classList.contains('lightbox-close')) closeLightbox();
+    });
+
+    // Keyboard ESC closes lightbox
+    safeAddListener(document, 'keydown', (e) => {
+        if (e.key === 'Escape') closeLightbox();
     });
 
     // Sub-Handlers
@@ -270,16 +307,25 @@ function openModal(exp) {
         </div>
     `).join('');
 
+    const directImg = exp.image ? getDirectMediaUrl(exp.image) : '';
     const imageHtml = exp.image ? `
         <div class="image-wrapper" style="position:relative;">
-            <img src="${getDirectMediaUrl(exp.image)}" alt="Media" id="modal-img" style="width:100%; border-radius:12px; margin-bottom:1rem; object-fit: cover; max-height: 400px;" 
+            <img src="${directImg}" alt="Media" id="modal-img" style="width:100%; border-radius:12px; margin-bottom:1rem; object-fit: cover; max-height: 400px; cursor: zoom-in;" 
+                onclick="openLightbox('${directImg || exp.image}')"
                 onerror="this.style.display='none'; document.getElementById('img-error').style.display='block';">
             <div id="img-error" style="display:none; background: #334155; padding: 2rem; border-radius: 12px; text-align: center; margin-bottom: 1rem;">
                 <p style="margin-bottom: 1rem;">🖼️ Bild kann nicht geladen werden.<br><small>(Häufig bei Safari/Mac oder Privat-Modus)</small></p>
-                <a href="${exp.image}" target="_blank" class="tag" style="background: var(--primary); text-decoration: none; display: inline-block;">Link direkt prüfen ↗</a>
+                <button class="btn-primary" onclick="openLightbox('${directImg || exp.image}')">Bild öffnen ↗</button>
+                <a href="${exp.image}" target="_blank" class="tag" style="background: var(--primary); text-decoration: none; display: inline-block; margin-left:0.5rem;">Original prüfen ↗</a>
             </div>
         </div>
     ` : '';
+
+    modalBody.innerHTML = `
+        <div class="detail-media">
+            ${videoHtml}
+            ${imageHtml}
+        </div>
     const videoHtml = getMediaHtml(exp.video);
 
     modalBody.innerHTML = `
@@ -511,17 +557,23 @@ function switchView(viewName) {
     btnHome.classList.remove('active');
     btnUpload.classList.remove('active');
     btnTools.classList.remove('active');
+    btnHome.removeAttribute('aria-current');
+    btnUpload.removeAttribute('aria-current');
+    btnTools.removeAttribute('aria-current');
 
     if (viewName === 'discovery') {
         viewDiscovery.style.display = 'block';
         btnHome.classList.add('active');
+        btnHome.setAttribute('aria-current', 'page');
         renderExperiments(experiments); // Re-render to ensure view is correct
     } else if (viewName === 'upload') {
         viewUpload.style.display = 'block';
         btnUpload.classList.add('active');
+        btnUpload.setAttribute('aria-current', 'page');
     } else if (viewName === 'tools') {
         viewTools.style.display = 'block';
         btnTools.classList.add('active');
+        btnTools.setAttribute('aria-current', 'page');
     }
 }
 

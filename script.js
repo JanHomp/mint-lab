@@ -1,6 +1,6 @@
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTH9gq6ptkqryPgtuhemcssiajxyx1NTU_8t1neQsvNFgGP8o7vj1JFQWK8C4Vs3XE-x5-eZql-pPep/pub?output=csv";
 const localExperiments = [id, title, subject, grade, duration, image, description, materials];
-const experiments = [id, title, subject, grade, duration, image, description, materials];
+const experiments = [];
 let container, filterSubject, filterGrade, searchInput, modal, modalBody, closeModal;
 let viewDiscovery, viewUpload, viewTools;
 let btnHome, btnTools, btnUpload, btnLogo, btnInspire;

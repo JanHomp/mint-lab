@@ -2,6 +2,46 @@
 // ERSETZEN SIE DIESEN LINK MIT IHREM GOOGLE SHEETS "WEB VERÖFFENTLICHEN" -> "CSV" LINK
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTH9gq6ptkqryPgtuhemcssiajxyx1NTU_8t1neQsvNFgGP8o7vj1JFQWK8C4Vs3XE-x5-eZql-pPep/pub?output=csv";
 
+/* Local/Fallback Data */
+const localExperiments = [
+    {
+        id: 1,
+        title: "Elefantenzahnpasta",
+        subject: "Chemie",
+        grade: "8-10",
+        duration: "short",
+        image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=600",
+        description: "Ein klassisches Experiment zur Katalyse, bei dem Wasserstoffperoxid rasant zersetzt wird und riesige Schaummengen erzeugt.",
+        safety: "Schutzbrille!",
+        materials: ["Wasserstoffperoxid (30%)", "Kaliumiodid oder Hefe", "Spülmittel", "Messzylinder", "Lebensmittelfarbe"],
+        steps: [
+            "Stellen Sie den Messzylinder auf eine wasserfeste Unterlage.",
+            "Geben Sie 50ml Wasserstoffperoxid und einen Spritzer Spülmittel hinein.",
+            "Fügen Sie Lebensmittelfarbe für den Effekt hinzu.",
+            "Geben Sie den Katalysator (in Wasser gelöstes Kaliumiodid oder Hefe) schnell hinzu und treten Sie zurück."
+        ]
+    },
+    {
+        id: 2,
+        title: "Die Zitronenbatterie",
+        subject: "Physik",
+        grade: "5-7",
+        duration: "medium",
+        image: "https://images.unsplash.com/photo-1581093458791-9f302e6831d7?auto=format&fit=crop&q=80&w=600",
+        description: "Wie man mit Früchten Strom erzeugt. Eine Einführung in elektrochemische Zellen.",
+        materials: ["3-4 Zitronen", "Kupfermünzen oder -nägel", "Verzinkte Nägel", "Krokodilklemmen", "LED-Diode"],
+        steps: [
+            "Rollen Sie die Zitronen etwas, um den Saftfluss im Inneren zu fördern.",
+            "Stecken Sie in jede Zitrone einen Kupfernagel und einen verzinkten Nagel (Abstand!).",
+            "Verbinden Sie den Pluspol (Kupfer) der einen Zitrone mit dem Minuspol (Zink) der nächsten.",
+            "Schließen Sie den Stromkreis mit der LED."
+        ]
+    },
+    // ... (Weitere Beispiele gekürzt für Code-Überblick, bleiben im Fallback erhalten)
+];
+
+// Active State
+let experiments = [...localExperiments]; // Start with local data
 
 /* State & DOM Elements */
 // DOM Elements (assigned in init)

@@ -388,22 +388,20 @@ function filterExperiments() {
     if (query === 'jan' || query === 'jan h') {
         filtered.unshift({
             id: 999,
-            title: "Jans Super-Experiment",
+            title: "Jans Kaffee Experiment",
             subject: "Magie",
-            grade: "13+",
+            grade: "10",
             duration: "∞",
-            image: "https://images.squarespace-cdn.com/content/v1/5957d4148419c29314283239/fae4ef4d-2a16-46a4-8f9e-66d593e27ede/filter3+photo+from+basecamp.jpeg", // Reuse an image or better one
-            description: "Ein geheimes Experiment, das nur erscheint, wenn man den Meister ruft. 🧙‍♂️✨",
-            materials: ["Kaffee", "Geduld", "Code", "Magie"],
+            image: "https://images.squarespace-cdn.com/content/v1/5957d4148419c29314283239/fae4ef4d-2a16-46a4-8f9e-66d593e27ede/filter3+photo+from+basecamp.jpeg", 
+            description: "Kaffee ist lecker",
+            materials: ["Kaffee", "Zeit", "Code"],
             steps: [
-                "Einen Kaffee kochen.",
-                "Einen epischen Code schreiben.",
-                "Sich zurücklehnen und genießen."
+                "Einen Kaffee machen.",
+                "Code schreiben.",
             ],
-            safety: "Vorsicht: Extrem cool!"
+            safety: "Vorsicht, heißer Kaffee!"
         });
-        // Make it rain confetti logic could go here if we had a library, 
-        // for now a special alert or visual is enough in the card.
+        
 
     renderExperiments(filtered);
 }
@@ -413,7 +411,7 @@ function filterExperiments() {
             id: 999,
             title: "Davids Siebträger-Experiment",
             subject: "Barista",
-            grade: "13+",
+            grade: "9",
             duration: "∞",
             image: "https://img.ccnull.de/1090000/preview/1094003_17b5a157fde2c2d9f3e67b53e68e607c.jpg", // Reuse an image or better one
             description: "Ohne Kaffe läuft hier nichts.",

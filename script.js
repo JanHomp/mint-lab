@@ -1,34 +1,19 @@
-/* Configuration */
-// ERSETZEN SIE DIESEN LINK MIT IHREM GOOGLE SHEETS "WEB VERÖFFENTLICHEN" -> "CSV" LINK
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTH9gq6ptkqryPgtuhemcssiajxyx1NTU_8t1neQsvNFgGP8o7vj1JFQWK8C4Vs3XE-x5-eZql-pPep/pub?output=csv";
-
-/* Local/Fallback Data */
 const localExperiments = [];
-
 const experiments = [];
-
-/* State & DOM Elements */
-// DOM Elements (assigned in init)
 let container, filterSubject, filterGrade, searchInput, modal, modalBody, closeModal;
 let viewDiscovery, viewUpload, viewTools;
 let btnHome, btnTools, btnUpload, btnLogo, btnInspire;
 let btnDownloadPdf, btnAddFavorites, formUpload;
 let btnStart, btnStop, btnReset, stopwatchDisplay;
 let btnThemeToggle, profileModal, btnProfile, btnSaveProfile, profileNameInput;
-
-// Stopwatch vars
 let timerInterval;
 let startTime;
 let elapsed = 0;
-// Voice Control
 let recognition;
 let countDownMode = false;
-
-/* Initialization */
 function init() {
     console.log("MINT-App: Initialisiere DOM Elemente...");
-
-    // 1. Assign global elements
     container = document.getElementById('experiments-container');
     filterSubject = document.getElementById('filter-subject');
     filterGrade = document.getElementById('filter-grade');

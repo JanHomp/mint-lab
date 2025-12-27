@@ -455,6 +455,29 @@ function filterExperiments() {
         });
         // Make it rain confetti logic could go here if we had a library, 
         // for now a special alert or visual is enough in the card.
+
+    renderExperiments(filtered);
+}
+
+    if (query === 'david' || query === 'david h') {
+        filtered.unshift({
+            id: 999,
+            title: "Davids Siebträger-Experiment",
+            subject: "Barista",
+            grade: "13+",
+            duration: "∞",
+            image: "https://img.ccnull.de/1090000/preview/1094003_17b5a157fde2c2d9f3e67b53e68e607c.jpg", // Reuse an image or better one
+            description: "Ohne Kaffe läuft hier nichts.",
+            materials: ["Kaffee", "Geduld", "Code"],
+            steps: [
+                "Einen Kaffee kochen.",
+                "Einen epischen Code schreiben (ohne KI).",
+                "Kaffe."
+            ],
+            safety: "Heißer Kaffee!"
+        });
+        if (query === 'david' || query === 'david h') {
+        }
     }
 
     renderExperiments(filtered);

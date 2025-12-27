@@ -73,7 +73,34 @@ body {
     background-color: var(--bg-dark);
     color: var(--text-main);
     line-height: 1.6;
+
+    /* Safe area support for iOS devices (notably iPhone with notch / home indicator) */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+
+    -webkit-tap-highlight-color: rgba(0,0,0,0.06);
 }
+
+/* Ensure header accounts for safe-area on iPhones */
+.app-header {
+    padding-top: calc(1rem + env(safe-area-inset-top, 0px));
+}
+
+/* Improve tap targets for mobile */
+.nav-link { min-height: 44px; padding: 0.7rem 1rem; }
+.btn-primary, .btn-secondary { min-height: 48px; }
+
+/* Lightbox: fit into viewport taking safe areas into account */
+.lightbox img {
+    max-height: calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 64px);
+    width: auto;
+    height: auto;
+}
+
+/* Modal content padding for notch */
+.modal-content { padding-top: calc(2rem + env(safe-area-inset-top, 0px)); }
 
 /* Header */
 .app-header {
@@ -511,7 +538,7 @@ nav {
     border-radius: var(--radius-lg);
     border: 1px solid var(--border);
     position: relative;
-    padding: 2rem;
+    padding: 5rem;
     overflow-y: auto;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     animation: modalSlideIn 0.3s ease-out;
@@ -722,7 +749,7 @@ nav {
     }
 
     .app-header {
-        padding: 0.5rem 1rem;
+        padding: calc(0.8rem + env(safe-area-inset-top, 0px)) 1rem 0.6rem 1rem;
         flex-direction: column;
         gap: 0.5rem;
     }
@@ -738,10 +765,14 @@ nav {
     }
 
     .nav-link {
-        padding: 0.8rem 1.2rem;
+        padding: 0.9rem 1.2rem;
         /* Bigger touch target */
         scroll-snap-align: start;
-        font-size: 1.1rem;
+        font-size: 1.05rem;
+        min-height: 50px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .experiments-grid {
@@ -759,9 +790,10 @@ nav {
 
     /* Modal Mobile Adjustments */
     .modal-content {
-        padding: 1.5rem;
+        padding: 1.5rem 1.25rem 1.25rem 1.25rem;
         width: 95%;
         margin: 10px;
+        max-height: calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 24px);
     }
 
     .detail-title {
@@ -771,6 +803,13 @@ nav {
     .experiments-grid {
         gap: 1rem;
     }
+
+    /* Tools adjustments already added earlier; ensure full width buttons */
+    .tools-actions { flex-direction: column; align-items: stretch; }
+    .tools-actions .btn-primary, .tools-actions .btn-secondary, .tools-actions #btn-voice { width: 100%; }
+
+    .close-modal { top: calc(0.6rem + env(safe-area-inset-top, 0px)); right: calc(0.8rem + env(safe-area-inset-right, 0px)); }
+    .lightbox-close { top: calc(0.8rem + env(safe-area-inset-top, 0px)); right: calc(0.8rem + env(safe-area-inset-right, 0px)); }
 }
 
 /* Touch Target Helper */
@@ -798,6 +837,41 @@ nav {
     100% {
         transform: scale(1);
     }
+}
+
+/* Improve visibility of modal close button and mobile layout for tools */
+.close-modal {
+    z-index: 1010;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    font-size: 2rem;
+    line-height: 1;
+    border: 1px solid rgba(255,255,255,0.06);
+    background: rgba(0,0,0,0.35);
+    color: #fff;
+    box-shadow: 0 6px 14px rgba(2,6,23,0.4);
+    transition: transform 0.12s;
+}
+
+body.light-mode .close-modal {
+    border: 1px solid rgba(0,0,0,0.06);
+    background: rgba(255,255,255,0.9);
+    color: var(--text-main);
+}
+
+.lightbox-close {
+    z-index: 2001;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .preset-row { display: flex; gap: 0.5rem; justify-content: center; }
+    .preset-row .btn-preset { flex: 1 1 0; min-width: 0; }
+
+    .tools-actions { display: flex; flex-direction: column; gap: 0.5rem; align-items: stretch; }
+    .tools-actions .btn-primary, .tools-actions .btn-secondary, .tools-actions #btn-voice { width: 100%; }
+
+    .close-modal { font-size: 2.2rem; padding: 0.35rem 0.7rem; }
 }
 
 /* Print Mode */

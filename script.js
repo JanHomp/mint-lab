@@ -321,11 +321,6 @@ function openModal(exp) {
         </div>
     ` : '';
 
-    modalBody.innerHTML = `
-        <div class="detail-media">
-            ${videoHtml}
-            ${imageHtml}
-        </div>
     const videoHtml = getMediaHtml(exp.video);
 
     modalBody.innerHTML = `

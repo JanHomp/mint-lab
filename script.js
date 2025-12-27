@@ -443,7 +443,7 @@ function filterExperiments() {
             subject: "Magie",
             grade: "13+",
             duration: "∞",
-            image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format", // Reuse an image or better one
+            image: "https://images.squarespace-cdn.com/content/v1/5957d4148419c29314283239/fae4ef4d-2a16-46a4-8f9e-66d593e27ede/filter3+photo+from+basecamp.jpeg", // Reuse an image or better one
             description: "Ein geheimes Experiment, das nur erscheint, wenn man den Meister ruft. 🧙‍♂️✨",
             materials: ["Kaffee", "Geduld", "Code", "Magie"],
             steps: [

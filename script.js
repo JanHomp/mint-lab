@@ -1,6 +1,6 @@
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTH9gq6ptkqryPgtuhemcssiajxyx1NTU_8t1neQsvNFgGP8o7vj1JFQWK8C4Vs3XE-x5-eZql-pPep/pub?output=csv";
-const localExperiments = [];
-const experiments = [];
+const localExperiments = [id, title, subject, grade, duration, image, description, materials, subject];
+const experiments = [id, title, subject, grade, duration, image, description, materials, subject];
 let container, filterSubject, filterGrade, searchInput, modal, modalBody, closeModal;
 let viewDiscovery, viewUpload, viewTools;
 let btnHome, btnTools, btnUpload, btnLogo, btnInspire;
@@ -767,3 +767,4 @@ function splitCSVLine(line) {
     result.push(current.trim().replace(/^"|"$/g, ''));
     return result;
 }
+ 

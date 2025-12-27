@@ -392,7 +392,7 @@ function filterExperiments() {
             subject: "Magie",
             grade: "10",
             duration: "∞",
-            image: "https://images.squarespace-cdn.com/content/v1/5957d4148419c29314283239/fae4ef4d-2a16-46a4-8f9e-66d593e27ede/filter3+photo+from+basecamp.jpeg", 
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRANyDARzgt1I0rys74T21KunpTEqrvc8b13Q&s", 
             description: "Kaffee ist lecker",
             materials: ["Kaffee", "Zeit", "Code"],
             steps: [

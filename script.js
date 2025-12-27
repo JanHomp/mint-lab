@@ -2,8 +2,6 @@
 // ERSETZEN SIE DIESEN LINK MIT IHREM GOOGLE SHEETS "WEB VERÖFFENTLICHEN" -> "CSV" LINK
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTH9gq6ptkqryPgtuhemcssiajxyx1NTU_8t1neQsvNFgGP8o7vj1JFQWK8C4Vs3XE-x5-eZql-pPep/pub?output=csv";
 
-// Active State
-let experiments = [...localExperiments]; // Start with local data
 
 /* State & DOM Elements */
 // DOM Elements (assigned in init)

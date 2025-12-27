@@ -865,7 +865,7 @@ body.light-mode .close-modal {
 }
 
 @media (max-width: 768px) {
-    .preset-row { display: flex; gap: 1.5rem; justify-content: center; }
+    .preset-row { display: flex; gap: 0.5rem; justify-content: center; }
     .preset-row .btn-preset { flex: 1 1 0; min-width: 0; }
 
     .tools-actions { display: flex; flex-direction: column; gap: 0.5rem; align-items: stretch; }

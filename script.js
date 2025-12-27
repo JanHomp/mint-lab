@@ -388,8 +388,8 @@ function filterExperiments() {
     if (query === 'jan' || query === 'jan h') {
         filtered.unshift({
             id: 999,
-            title: "Jans Kaffee Experiment",
-            subject: "Magie",
+            title: "Jans Kaffee-Experiment",
+            subject: "Barista",
             grade: "10",
             duration: "∞",
             image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRANyDARzgt1I0rys74T21KunpTEqrvc8b13Q&s", 

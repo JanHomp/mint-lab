@@ -5,6 +5,8 @@ const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTH9gq6ptkqry
 /* Local/Fallback Data */
 const localExperiments = [];
 
+const experiments = [];
+
 /* State & DOM Elements */
 // DOM Elements (assigned in init)
 let container, filterSubject, filterGrade, searchInput, modal, modalBody, closeModal;

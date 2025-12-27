@@ -281,11 +281,11 @@ function openModal(exp) {
             <div class="tags" style="margin-bottom:1rem">
                 <span class="tag">${exp.subject}</span>
                 <span class="tag grade">Klasse ${exp.grade}</span>
+                <span class="tag danger">${exp.danger}</span>
             </div>
             <h2 class="detail-title">${exp.title}</h2>
             <p style="color:var(--text-muted); font-size:1.1rem">${exp.description}</p>
         </div>
-
         <div class="detail-section">
             <h3>🔬 Materialien</h3>
             <ul class="materials-list">
@@ -399,7 +399,8 @@ function filterExperiments() {
                 "Einen Kaffee machen.",
                 "Code schreiben.",
             ],
-            safety: "Vorsicht, heißer Kaffee!"
+            safety: "⚠️ Vorsicht, heißer Kaffee!",
+            danger: "⚠️ Vorsicht, heißer Kaffee!"
         });
         
 
@@ -417,11 +418,12 @@ function filterExperiments() {
             description: "Ohne Kaffe läuft hier nichts.",
             materials: ["Kaffee", "Geduld", "Code"],
             steps: [
-                "Einen Kaffee kochen.",
-                "Einen epischen Code schreiben (ohne KI).",
+                "Einen Kaffee machen.",
+                "Code schreiben (ohne KI).",
                 "Kaffe."
             ],
-            safety: "Heißer Kaffee!"
+            safety: "⚠️ Heißer Kaffee!",
+            danger: "⚠️ Vorsicht, heißer Kaffee!"
         });
         if (query === 'david' || query === 'david h') {
         }

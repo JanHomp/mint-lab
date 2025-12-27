@@ -806,7 +806,7 @@ nav {
 
     /* Tools adjustments already added earlier; ensure full width buttons */
     .tools-actions { flex-direction: column; align-items: stretch; }
-    .tools-actions .btn-primary, .tools-actions .btn-secondary, .tools-actions #btn-voice { width: 30%; }
+    .tools-actions .btn-primary, .tools-actions .btn-secondary, .tools-actions #btn-voice { width: 100%; }
 
     .close-modal { top: calc(0.6rem + env(safe-area-inset-top, 0px)); right: calc(0.8rem + env(safe-area-inset-right, 0px)); }
     .lightbox-close { top: calc(0.8rem + env(safe-area-inset-top, 0px)); right: calc(0.8rem + env(safe-area-inset-right, 0px)); }
@@ -865,7 +865,7 @@ body.light-mode .close-modal {
 }
 
 @media (max-width: 768px) {
-    .preset-row { display: flex; gap: 0.5rem; justify-content: center; }
+    .preset-row { display: flex; gap: 1.5rem; justify-content: center; }
     .preset-row .btn-preset { flex: 1 1 0; min-width: 0; }
 
     .tools-actions { display: flex; flex-direction: column; gap: 0.5rem; align-items: stretch; }
